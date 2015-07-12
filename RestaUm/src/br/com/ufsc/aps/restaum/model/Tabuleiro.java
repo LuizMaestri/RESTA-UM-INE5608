@@ -7,11 +7,11 @@ import java.util.Arrays;
 public class Tabuleiro {
 
 	private Posicao[] posicoes = new Posicao[33];
-	private Estatisticas estatisticas;
+	private Estatisticas estatisticas = new Estatisticas();
 	private Jogador jogador;
 
 	public Tabuleiro() {
-		Arrays.fill(posicoes, new Posicao());
+		for (int i = 0; i < posicoes.length; i++) posicoes[i] = new Posicao(i);
 		this.iniciarTabuleiro();
 	}
 
@@ -30,11 +30,11 @@ public class Tabuleiro {
     private void iniciarTabuleiro() {
 		jogador = new Jogador();
         
-		for (int i=0; i<33; i++){
+		for (int i=0; i<posicoes.length; i++){
             if(i != 0 && i != 3 && i != 6 && i != 13 && i != 20 && i != 27 && i != 30)
-                posicoes[i].setPosicaoDireita(posicoes[i+1]);
+                posicoes[i].setPosicaoEsquerda(posicoes[i - 1]);
             if(i != 2 && i != 5 && i != 12 && i != 19 && i != 26 && i != 29 && i != 32)
-                posicoes[i].setPosicaoEsquerda(posicoes[i-1]);
+                posicoes[i].setPosicaoDireita(posicoes[i+1]);
             if(i != 20 && i != 21 && i != 25 && i != 26 && i != 30 && i != 31 && i != 32) {
                 if (i != 0 && i != 1 && i != 2 && i != 27 && i != 28 && i != 29){
                     if(i != 3 && i != 4 && i != 5 && i != 22 && i != 23 && i != 24)
@@ -58,11 +58,14 @@ public class Tabuleiro {
 
 	}
 
-	public void jogada(int inicial, int destino) throws PosicaoInvalidaException {
-		if (posicoes[inicial].valida(posicoes[destino])) {
-            alterarPosicao(inicial, destino);
+	public int jogada(int inicial, int destino) throws PosicaoInvalidaException {
+		int comida = posicoes[inicial].valida(posicoes[destino]);
+        if (comida != -1) {
+            alterarPosicao(inicial, destino, comida);
+            bloqueiaPecas();
             estatisticas.setPecasComidas(estatisticas.getPecasComidas() + 1);
             alteraJogador();
+            return comida;
         }else
             throw new PosicaoInvalidaException();
 	}
@@ -71,9 +74,10 @@ public class Tabuleiro {
 		jogador.setJogando(!jogador.isJogando());
 	}
 
-	private void alterarPosicao(int a, int b) {
-		posicoes[a].setOcupada(!posicoes[a].isOcupada());
-        posicoes[b].setOcupada(!posicoes[b].isOcupada());
+	private void alterarPosicao(int inicial, int destino, int comida) {
+		posicoes[inicial].setOcupada(false);
+        posicoes[destino].setOcupada(true);
+        posicoes[comida].setOcupada(false);
     }
 
     public void bloqueiaPecas(){
@@ -89,7 +93,7 @@ public class Tabuleiro {
         }
     }
     
-    public boolean bloqueado(){
+    public boolean isBloqueado(){
         for(Posicao pos : posicoes){
             if(!pos.isBloqueada()){
                 return false;

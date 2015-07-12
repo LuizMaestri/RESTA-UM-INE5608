@@ -2,16 +2,9 @@ package br.com.ufsc.aps.restaum.model;
 
 public class Estatisticas {
 
-	private Integer qntJogadas;
-	private Integer pecasComidas;
-	private Double tempoJogador;
-	
-	public Integer getQntJogadas() {
-		return qntJogadas;
-	}
-	public void setQntJogadas(Integer qntJogadas) {
-		this.qntJogadas = qntJogadas;
-	}
+	private Integer pecasComidas = 0;
+	private Double tempoJogador = 0.0;
+
 	public Integer getPecasComidas() {
 		return pecasComidas;
 	}

@@ -8,6 +8,19 @@ public class Posicao {
 	private Posicao posicaoEsquerda;
 	private Posicao posicaoDireita;
     private boolean bloqueada = false;
+    private int index;
+
+    public Posicao(int index) {
+        this.index = index;
+    }
+
+    public int getIndex() {
+        return index;
+    }
+
+    public void setIndex(int index) {
+        this.index = index;
+    }
 
     public boolean isOcupada() {
 		return ocupada;
@@ -49,24 +62,30 @@ public class Posicao {
 		this.posicaoDireita = posicaoDireita;
 	}
 
-	public boolean valida(Posicao posicao) {
-		if (this.getPosicaoAbaixo().isOcupada())
-            if(this.getPosicaoAbaixo().getPosicaoAbaixo().equals(posicao))
-                if(!posicao.isOcupada())
-                    return true;
-        if (this.getPosicaoAcima().isOcupada())
-            if(this.getPosicaoAcima().getPosicaoAcima().equals(posicao))
-                if(!posicao.isOcupada())
-                    return true;
-        if (this.getPosicaoDireita().isOcupada())
-            if(this.getPosicaoDireita().getPosicaoDireita().equals(posicao))
-                if(!posicao.isOcupada())
-                    return true;
-        if (this.getPosicaoEsquerda().isOcupada())
-            if(this.getPosicaoEsquerda().getPosicaoEsquerda().equals(posicao))
-                if(!posicao.isOcupada())
-                    return true;
-        return false;
+	public int valida(Posicao posicao) {
+        if (this.isOcupada()) {
+            Posicao abaixo2 = posicaoAbaixo != null? posicaoAbaixo.getPosicaoAbaixo(): null;
+            Posicao acima2 = posicaoAcima != null? posicaoAcima.getPosicaoAcima(): null;
+            Posicao direita2 = posicaoDireita != null? posicaoDireita.getPosicaoDireita(): null;
+            Posicao esquerda2 = posicaoEsquerda != null? posicaoEsquerda.getPosicaoEsquerda(): null;
+            if (posicaoAbaixo != null && posicaoAbaixo.isOcupada())
+                if (abaixo2 != null && abaixo2.equals(posicao))
+                    if (!posicao.isOcupada())
+                        return this.getPosicaoAbaixo().getIndex();
+            if (posicaoAcima != null && posicaoAcima.isOcupada())
+                if (acima2 != null && acima2.equals(posicao))
+                    if (!posicao.isOcupada())
+                        return this.getPosicaoAcima().getIndex();
+            if (posicaoDireita != null && posicaoDireita.isOcupada())
+                if (direita2 != null && direita2.equals(posicao))
+                    if (!posicao.isOcupada())
+                        return this.getPosicaoDireita().getIndex();
+            if (posicaoEsquerda != null && posicaoEsquerda.isOcupada())
+                if (esquerda2 != null && esquerda2.equals(posicao))
+                    if (!posicao.isOcupada())
+                        return this.getPosicaoEsquerda().getIndex();
+        }
+        return -1;
     }
 
     public void setBloqueada(boolean bloqueada) {
