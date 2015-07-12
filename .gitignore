@@ -2,8 +2,9 @@
 *.doc
 *.docx
 *.iml
+*.jar
 RestaUm/bin/
 RestaUm/.idea/
-RestaUm/.settings
+RestaUm/.settings/
 RestaUm/.project
 RestaUm/.classpath
