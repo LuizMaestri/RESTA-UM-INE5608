@@ -3,13 +3,13 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package br.com.ufsc.aps.restaum.view;
+package restaum.view;
 
-import br.com.ufsc.aps.restaum.exception.PosicaoInvalidaException;
-import br.com.ufsc.aps.restaum.model.Jogo;
-import br.com.ufsc.aps.restaum.model.Tabuleiro;
-import br.com.ufsc.aps.restaum.network.AtorNetGames;
-import br.com.ufsc.aps.restaum.network.JogadaRestaUm;
+import restaum.exception.PosicaoInvalidaException;
+import restaum.model.Jogo;
+import restaum.model.Tabuleiro;
+import restaum.network.AtorNetGames;
+import restaum.network.JogadaRestaUm;
 
 import javax.swing.*;
 import java.awt.*;

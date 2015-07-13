@@ -1,4 +1,4 @@
-package br.com.ufsc.aps.restaum.network;
+package restaum.network;
 
 /**
  * Created by Luiz Maestri on 12/07/2015.

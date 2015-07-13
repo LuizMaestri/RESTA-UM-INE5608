@@ -1,6 +1,6 @@
-package br.com.ufsc.aps.restaum.model;
+package restaum.controller;
 
-import br.com.ufsc.aps.restaum.view.TelaJogo;
+import restaum.view.TelaJogo;
 
 /**
  * Created by Luiz Maestri on 12/07/2015.

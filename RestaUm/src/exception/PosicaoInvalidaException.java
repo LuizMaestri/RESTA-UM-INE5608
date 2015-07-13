@@ -1,4 +1,4 @@
-package br.com.ufsc.aps.restaum.exception;
+package restaum.exception;
 
 public class PosicaoInvalidaException extends Exception {
 

@@ -1,4 +1,4 @@
-package br.com.ufsc.aps.restaum.model;
+package restaum.model;
 
 public class Jogador {
 

@@ -1,7 +1,7 @@
-package br.com.ufsc.aps.restaum.network;
+package restaum.network;
 
-import br.com.ufsc.aps.restaum.model.Jogo;
-import br.com.ufsc.aps.restaum.view.TelaJogo;
+import restaum.model.Jogo;
+import restaum.view.TelaJogo;
 import br.ufsc.inf.leobr.cliente.Jogada;
 import br.ufsc.inf.leobr.cliente.OuvidorProxy;
 import br.ufsc.inf.leobr.cliente.Proxy;
@@ -34,6 +34,7 @@ public class AtorNetGames implements OuvidorProxy {
             JOptionPane.showMessageDialog(null,"Já está conectado");
         } catch (NaoPossivelConectarException e) {
             JOptionPane.showMessageDialog(null, "Não foi possível conectar");
+            System.exit(0);
 
         } catch (ArquivoMultiplayerException e) {
             JOptionPane.showMessageDialog(null, "Problemas com a configuração de rede");

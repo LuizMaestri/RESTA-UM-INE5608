@@ -1,6 +1,6 @@
-package br.com.ufsc.aps.restaum.model;
+package restaum.model;
 
-import br.com.ufsc.aps.restaum.exception.PosicaoInvalidaException;
+import restaum.exception.PosicaoInvalidaException;
 
 public class Jogo {
     private Tabuleiro[] tabuleiros = new Tabuleiro[2];
