@@ -4,7 +4,7 @@
 *.iml
 *.jar
 RestaUm/bin/
-RestaUm/.idea/
+.idea/
 RestaUm/.settings/
 RestaUm/.project
 RestaUm/.classpath
