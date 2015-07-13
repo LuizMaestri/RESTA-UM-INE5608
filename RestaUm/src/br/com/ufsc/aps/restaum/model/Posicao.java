@@ -7,7 +7,7 @@ public class Posicao {
 	private Posicao posicaoAbaixo;
 	private Posicao posicaoEsquerda;
 	private Posicao posicaoDireita;
-    private boolean bloqueada = false;
+    private boolean bloqueada = true;
     private int index;
 
     public Posicao(int index) {

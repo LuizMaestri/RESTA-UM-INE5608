@@ -7,22 +7,12 @@ public class JogadaRestaUm implements br.ufsc.inf.leobr.cliente.Jogada {
 
     private int pecainicial;
     private int pecadestino;
-    private int pecacomida;
-    private int pecascomidas;
-    private String vencedor;
 
-    public int getPecascomidas() {
-        return pecascomidas;
-    }
-
-    public JogadaRestaUm(int pecainicial, int pecadestino, int pecacomida, String vencedor, int pecascomidas) {
+    public JogadaRestaUm(int pecainicial, int pecadestino) {
         super();
 
         this.pecainicial = pecainicial;
         this.pecadestino = pecadestino;
-        this.pecacomida = pecacomida;
-        this.vencedor = vencedor;
-        this.pecascomidas =pecascomidas;
     }
 
     public int getPecainicial() {
@@ -33,11 +23,4 @@ public class JogadaRestaUm implements br.ufsc.inf.leobr.cliente.Jogada {
         return pecadestino;
     }
 
-    public int getPecacomida() {
-        return pecacomida;
-    }
-
-    public String getVencedor() {
-        return vencedor;
-    }
 }

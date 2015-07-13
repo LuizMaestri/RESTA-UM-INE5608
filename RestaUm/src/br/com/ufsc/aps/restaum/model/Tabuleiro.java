@@ -10,9 +10,12 @@ public class Tabuleiro {
 	private Estatisticas estatisticas = new Estatisticas();
 	private Jogador jogador;
 
-	public Tabuleiro() {
+
+	public Tabuleiro(String nomeJogador) {
 		for (int i = 0; i < posicoes.length; i++) posicoes[i] = new Posicao(i);
 		this.iniciarTabuleiro();
+		estatisticas=new Estatisticas();
+		jogador = new Jogador(nomeJogador);
 	}
 
     public Posicao[] getPosicoes() {
@@ -28,7 +31,6 @@ public class Tabuleiro {
     }
 
     private void iniciarTabuleiro() {
-		jogador = new Jogador();
         
 		for (int i=0; i<posicoes.length; i++){
             if(i != 0 && i != 3 && i != 6 && i != 13 && i != 20 && i != 27 && i != 30)
@@ -53,6 +55,8 @@ public class Tabuleiro {
                 }else
                     posicoes[i].setPosicaoAcima(posicoes[i-3]);
             }
+            if(i == 4 || i == 14 || i == 18 || i == 28)
+            	posicoes[i].setBloqueada(false);
         }
         posicoes[16].setOcupada(false);
 
@@ -82,14 +86,11 @@ public class Tabuleiro {
 
     public void bloqueiaPecas(){
         for(Posicao pos : posicoes){
-            boolean posicaoAbaixoOcupada = pos.getPosicaoAbaixo() != null && !pos.getPosicaoAbaixo().isOcupada();
-            boolean posicaoAcimaOcupada = pos.getPosicaoAcima() != null && !pos.getPosicaoAcima().isOcupada();
-            boolean posicaoEsquerdaOcupada = pos.getPosicaoEsquerda() != null && !pos.getPosicaoEsquerda().isOcupada();
-            boolean posicaoDireitaOcupada = pos.getPosicaoDireita() != null && !pos.getPosicaoDireita().isOcupada();
-           
-            if(!posicaoAbaixoOcupada && !posicaoAcimaOcupada && !posicaoDireitaOcupada && !posicaoEsquerdaOcupada){
-                pos.setBloqueada(true);
-            }
+            boolean jogadaAbaixoValida = (pos.getPosicaoAbaixo() != null && pos.getPosicaoAbaixo().getPosicaoAbaixo() != null) && pos.valida(pos.getPosicaoAbaixo().getPosicaoAbaixo()) != -1;
+            boolean jogadaAcimaValida = (pos.getPosicaoAcima() != null && pos.getPosicaoAcima().getPosicaoAcima() != null) && pos.valida(pos.getPosicaoAcima().getPosicaoAcima()) != -1;
+            boolean jogadaEsquerdaValida = (pos.getPosicaoDireita() != null && pos.getPosicaoDireita().getPosicaoDireita() != null) && pos.valida(pos.getPosicaoDireita().getPosicaoDireita()) != -1;
+            boolean jogadaDireitaValida = (pos.getPosicaoEsquerda() != null && pos.getPosicaoEsquerda().getPosicaoEsquerda() != null) && pos.valida(pos.getPosicaoEsquerda().getPosicaoEsquerda()) != -1;
+            pos.setBloqueada((!jogadaAbaixoValida && !jogadaAcimaValida && !jogadaDireitaValida && !jogadaEsquerdaValida)|| !pos.isOcupada());
         }
     }
     

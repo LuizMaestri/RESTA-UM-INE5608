@@ -9,10 +9,7 @@ public class Jogador {
 
 	public Jogador(String nome) {
 		this.nome = nome;
-	}
-
-	public Jogador() {
-		// TODO Auto-generated constructor stub
+		qntPecas=32;
 	}
 
 	public String getNome() {
