@@ -23,7 +23,7 @@ public class TelaJogo extends javax.swing.JFrame {
     private Jogo jogo;
     private String nome="";
     private String servidor="";
-    private AtorNetGames atornet;
+    private AtorNetGames atorNet;
     private int origem = -1;
   	String nomeAdversario="";
 
@@ -33,12 +33,12 @@ public class TelaJogo extends javax.swing.JFrame {
     }
 
     private void initComponents() {
-        atornet = new AtorNetGames(this);
+        atorNet = new AtorNetGames(this);
         nome = this.insereNome();
         servidor=this.insereServidor();
-        atornet.conectar(nome,servidor);
+        atorNet.conectar(nome, servidor);
         this.setVisible(true);
-        atornet.iniciarPartida();
+        atorNet.iniciarPartida();
         for (int i = 0, len = pecas.length; i < len; i++) {
             pecas[i] = new JButton();
             pecasOponente[i] = new JButton();
@@ -55,7 +55,7 @@ public class TelaJogo extends javax.swing.JFrame {
             pecas[i].addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
-                    if(atornet.isMinhaVez()){
+                    if(atorNet.isMinhaVez()){
                         if(origem!=-1) {
                             fazJogada(origem,c);
                             origem = -1;
@@ -378,13 +378,11 @@ public class TelaJogo extends javax.swing.JFrame {
     }
 
     public void anunciarVencedor(boolean eu) {
-        if(eu){
+        if(eu)
             JOptionPane.showMessageDialog(null, "O vencedor é \n Você: "+nome);
-            perguntaReiniciar();
-        }else{
+        else
             JOptionPane.showMessageDialog(null, "O vencedor é \n Adversario: "+nomeAdversario);
-            perguntaReiniciar();
-    	}
+        perguntaReiniciar();
     }
 
     public void perguntaReiniciar() {
@@ -392,7 +390,7 @@ public class TelaJogo extends javax.swing.JFrame {
     	        JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
     	    reiniciarJogo();
     	} else {
-    	    atornet.desconectar();
+    	    atorNet.desconectar();
     	    System.exit(1);
     	}
     }
@@ -407,13 +405,13 @@ public class TelaJogo extends javax.swing.JFrame {
     	textPecas.setText("");
     	textPecasOponente.setText("");
     	textTempo.setText("");
-    	atornet.desconectar();
-    	atornet.conectar(nome, servidor);
-    	atornet.iniciarPartida();
+    	atorNet.desconectar();
+    	atorNet.conectar(nome, servidor);
+    	atorNet.iniciarPartida();
     }
 
     public void iniciaPartidaRede(boolean comecoJogando){
-    	nomeAdversario=atornet.obterNomeAdversario();
+    	nomeAdversario= atorNet.obterNomeAdversario();
     	String nomes[]=new String [2];
     	nomes[0]=nome;
     	nomes[1]=nomeAdversario;
@@ -452,16 +450,16 @@ public class TelaJogo extends javax.swing.JFrame {
 		case -1:
 			break;
 		case -2:
-    		atornet.enviarJogada(origem, destino);
+    		atorNet.enviarJogada(origem, destino);
     		anunciarVencedor(true);
     		break;
 		case -3:
-    		atornet.enviarJogada(origem, destino);
+    		atorNet.enviarJogada(origem, destino);
     		anunciarVencedor(false);
     		break;
 		default:
 			pintarJogada(origem, destino, com);
-			atornet.enviarJogada(origem, destino);
+			atorNet.enviarJogada(origem, destino);
         }
 	}
 
@@ -474,7 +472,7 @@ public class TelaJogo extends javax.swing.JFrame {
     }
 
     public void recebeJogadaNet(JogadaRestaUm jogadaRestaUm1) {
-        int destino =  jogadaRestaUm1.getPecaDestino();
+        int destino = jogadaRestaUm1.getPecaDestino();
         int origem = jogadaRestaUm1.getPecaInicial();
         int com = jogo.jogada(1,origem,destino);
         switch (com) {
