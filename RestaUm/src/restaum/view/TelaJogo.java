@@ -1,13 +1,6 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package restaum.view;
 
-import restaum.exception.PosicaoInvalidaException;
 import restaum.model.Jogo;
-import restaum.model.Tabuleiro;
 import restaum.network.AtorNetGames;
 import restaum.network.JogadaRestaUm;
 
@@ -15,17 +8,9 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.Arrays;
 
-/**
- *
- * @author faa
- */
 public class TelaJogo extends javax.swing.JFrame {
 
-    /**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
 	private JButton[] pecas = new JButton[33];
     private JButton[] pecasOponente = new JButton[33];
@@ -40,58 +25,50 @@ public class TelaJogo extends javax.swing.JFrame {
     private String servidor="";
     private AtorNetGames atornet;
     private int origem = -1;
-  	String nomeAdversario="";
-  	
-    
+  	private String nomeAdversario="";
+
     public TelaJogo() {
-        
         initComponents();
         this.setVisible(true);
-        
-
     }
 
     public void iniciaPartidaRede(boolean comecoJogando){
-  
-    	
-    	nomeAdversario=atornet.ObterNomeAdversario();
+    	nomeAdversario=atornet.obterNomeAdversario();
     	String nomes[]=new String [2];
     	nomes[0]=nome;
     	nomes[1]=nomeAdversario;
-    	jogo = new Jogo(comecoJogando,nomes);
+    	jogo = new Jogo(nomes);
     	if(comecoJogando)
-    	JOptionPane.showMessageDialog(null, "Jogo começou! Você começa! \n Seu oponente é "+nomeAdversario);
+    	    JOptionPane.showMessageDialog(null, "Jogo começou! Você começa! \n Seu oponente é "+nomeAdversario);
     	else
     		JOptionPane.showMessageDialog(null, "Jogo começou! O oponente começa!\n Seu oponente é "+nomeAdversario);
-    	
-    
     }
-	public void fazJogada(int zero, int origem, int c){
-		
-        int com = jogo.jogada(0,origem,c);
+
+	public void fazJogada(int origem, int destino){
+        int com = jogo.jogada(0,origem,destino);
         switch (com) {
 		case -1:
 			break;
 		case -2:
-			JOptionPane.showMessageDialog(null, "O vencedor é \n Você: "+nome);
-    		atornet.enviarJogada(origem, c);
+    		atornet.enviarJogada(origem, destino);
+            JOptionPane.showMessageDialog(null, "O vencedor é \n Você: "+nome);
     		atornet.desconectar();
     		break;
-		case -3:
-			JOptionPane.showMessageDialog(null, "O vencedor é \n Adversario: "+nomeAdversario);
-    		atornet.enviarJogada(origem, c);
+        case -3:
+    		atornet.enviarJogada(origem, destino);
+            JOptionPane.showMessageDialog(null, "O vencedor é \n Adversario: "+nomeAdversario);
     		atornet.desconectar();
     		break;
 		default:
 			pecas[origem].setBackground(Color.black);
-            pecas[c].setBackground(Color.yellow);
+            pecas[destino].setBackground(Color.yellow);
             pecas[com].setBackground(Color.black);
             pecas[origem].repaint();
-            pecas[c].repaint();
+            pecas[destino].repaint();
             pecas[com].repaint();
             textPecas.setText("" + jogo.getTabuleiro(0).getEstatisticas().getPecasComidas());
             textTempo.setText(""+jogo.getTabuleiro(0).getEstatisticas().tempo());
-            atornet.enviarJogada(origem, c);
+            atornet.enviarJogada(origem, destino);
         }
 	}
     
@@ -118,9 +95,9 @@ public class TelaJogo extends javax.swing.JFrame {
             pecas[i].addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
-                    if(atornet.ehMinhaVez()){
+                    if(atornet.isMinhaVez()){
                 	if(origem!=-1) {
-                		fazJogada(0,origem,c);
+                		fazJogada(origem,c);
                 		origem = -1;
                     }
                     else
@@ -130,8 +107,6 @@ public class TelaJogo extends javax.swing.JFrame {
                     	JOptionPane.showMessageDialog(null, "Não é sua vez!");}
             });
         }
-        
-        
        
         jLabel1 = new javax.swing.JLabel();
         textPecas = new javax.swing.JTextField("0");
@@ -450,27 +425,18 @@ public class TelaJogo extends javax.swing.JFrame {
                 .addGap(23, 23, 23))
         );
 
-
         pack();
     }
 
-
-    
-    public String insereNome() {
+    private String insereNome() {
         String nome = JOptionPane.showInputDialog("Insira o Nome");
         return nome;
     }
 
-    public String insereServidor() {
+    private String insereServidor() {
         String servidor= JOptionPane.showInputDialog("Insira o servidor");
         return servidor;
     }
-
-    public void exibeVencedor(String vencedor) {
-        JOptionPane.showMessageDialog(null,vencedor);
-    }
-
-
 
     public void recebeJogadaNet(JogadaRestaUm jogadaRestaUm1) {
         int destino =  jogadaRestaUm1.getPecadestino();

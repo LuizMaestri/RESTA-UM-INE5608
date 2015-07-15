@@ -1,6 +1,5 @@
 package restaum.network;
 
-import restaum.model.Jogo;
 import restaum.view.TelaJogo;
 import br.ufsc.inf.leobr.cliente.Jogada;
 import br.ufsc.inf.leobr.cliente.OuvidorProxy;
@@ -10,24 +9,20 @@ import br.ufsc.inf.leobr.cliente.exception.*;
 import javax.swing.*;
 
 public class AtorNetGames implements OuvidorProxy {
-    /**
-	 * 
-	 */
+
 	private static final long serialVersionUID = 1L;
-	private TelaJogo telajogo;
+	private TelaJogo telaJogo;
     private Proxy proxy;
-    private Jogo jogo;
-    private boolean ehMinhaVez= false;
-    public AtorNetGames(TelaJogo telajogo) {
+    private boolean minhaVez= false;
+
+    public AtorNetGames(TelaJogo telaJogo) {
         super();
-        this.telajogo = telajogo;
+        this.telaJogo = telaJogo;
         proxy=Proxy.getInstance();
         proxy.addOuvinte(this);
     }
 
-
-    public void conectar(String nome, String servidor)
-    {
+    public void conectar(String nome, String servidor){
         try {
             proxy.conectar(servidor,nome);
         } catch (JahConectadoException e) {
@@ -42,12 +37,9 @@ public class AtorNetGames implements OuvidorProxy {
         }
     }
     
-    public boolean ehMinhaVez()
-    {
-    	return ehMinhaVez;
-    	
+    public boolean isMinhaVez(){
+    	return minhaVez;
     }
-    
 
     public void iniciarPartida(){
         try {
@@ -57,24 +49,24 @@ public class AtorNetGames implements OuvidorProxy {
         }
     }
 
-    public void enviarJogada(int pecainicial, int pecadestino){
-        JogadaRestaUm jogadaRestaUm = new JogadaRestaUm(pecainicial,pecadestino);
+    public void enviarJogada(int pecaInicial, int pecaDestino){
+        JogadaRestaUm jogadaRestaUm = new JogadaRestaUm(pecaInicial,pecaDestino);
         try {
             proxy.enviaJogada(jogadaRestaUm);
         } catch (NaoJogandoException e) {
             JOptionPane.showMessageDialog(null,"Você não está jogando");
         }
 
-        ehMinhaVez=false;
+        minhaVez=false;
     }
 
     @Override
     public void iniciarNovaPartida(Integer posicao) {
     	if (posicao==1)
-    		ehMinhaVez=true;
+    		minhaVez=true;
     	if(posicao==2)
-    		ehMinhaVez=false;
-    telajogo.iniciaPartidaRede(ehMinhaVez);
+    		minhaVez=false;
+        telaJogo.iniciaPartidaRede(minhaVez);
     }
 
     @Override
@@ -90,10 +82,10 @@ public class AtorNetGames implements OuvidorProxy {
     @Override
     public void receberJogada(Jogada jogada) {
     	System.out.println("recebeu");
-    JogadaRestaUm jogadaRestaUm1 = (JogadaRestaUm)jogada;
-      telajogo.recebeJogadaNet(jogadaRestaUm1);
+        JogadaRestaUm jogadaRestaUm1 = (JogadaRestaUm)jogada;
+        telaJogo.recebeJogadaNet(jogadaRestaUm1);
 
-      ehMinhaVez=true;
+      minhaVez = true;
     }
 
     @Override
@@ -114,14 +106,12 @@ public class AtorNetGames implements OuvidorProxy {
         }
     }
 
-
-	public String ObterNomeAdversario() {
-		String nome="";
-		if(ehMinhaVez)
-		nome=proxy.obterNomeAdversario(2);
+	public String obterNomeAdversario() {
+        String nome;
+		if(minhaVez)
+		    nome = proxy.obterNomeAdversario(2);
 		else
-		nome=proxy.obterNomeAdversario(1);
+            nome = proxy.obterNomeAdversario(1);
 		return nome;
-		
 	}
 }

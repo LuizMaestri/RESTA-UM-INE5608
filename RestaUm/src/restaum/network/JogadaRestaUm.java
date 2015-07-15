@@ -1,26 +1,22 @@
 package restaum.network;
 
-/**
- * Created by Luiz Maestri on 12/07/2015.
- */
 public class JogadaRestaUm implements br.ufsc.inf.leobr.cliente.Jogada {
 
-    private int pecainicial;
-    private int pecadestino;
+    private int pecaInicial;
+    private int pecaDestino;
 
-    public JogadaRestaUm(int pecainicial, int pecadestino) {
+    public JogadaRestaUm(int pecaInicial, int pecaDestino) {
         super();
-
-        this.pecainicial = pecainicial;
-        this.pecadestino = pecadestino;
+        this.pecaInicial = pecaInicial;
+        this.pecaDestino = pecaDestino;
     }
 
     public int getPecainicial() {
-        return pecainicial;
+        return pecaInicial;
     }
 
     public int getPecadestino() {
-        return pecadestino;
+        return pecaDestino;
     }
 
 }
