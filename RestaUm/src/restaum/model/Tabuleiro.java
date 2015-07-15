@@ -17,21 +17,9 @@ public class Tabuleiro {
 		jogador = new Jogador(nomeJogador);
 	}
 
-    public Posicao[] getPosicoes() {
-        return posicoes;
-    }
-
-    public Estatisticas getEstatisticas() {
-        return estatisticas;
-    }
-
-    public Jogador getJogador() {
-        return jogador;
-    }
-
     private void iniciarTabuleiro() {
-        
-		for (int i=0; i<posicoes.length; i++){
+
+        for (int i=0; i<posicoes.length; i++){
             if(i != 0 && i != 3 && i != 6 && i != 13 && i != 20 && i != 27 && i != 30)
                 posicoes[i].setPosicaoEsquerda(posicoes[i - 1]);
             if(i != 2 && i != 5 && i != 12 && i != 19 && i != 26 && i != 29 && i != 32)
@@ -48,18 +36,35 @@ public class Tabuleiro {
             if(i != 0 && i != 1 && i != 2 && i != 6 && i != 7 && i != 11 && i != 12) {
                 if (i != 3 && i != 4 && i != 5 && i != 30 && i != 31 && i != 32){
                     if(i != 8 && i != 9 && i != 10 && i != 27 && i != 28 && i != 29)
-                    posicoes[i].setPosicaoAcima(posicoes[i-7]);
+                        posicoes[i].setPosicaoAcima(posicoes[i-7]);
                     else
-                    posicoes[i].setPosicaoAcima(posicoes[i-5]);
+                        posicoes[i].setPosicaoAcima(posicoes[i-5]);
                 }else
                     posicoes[i].setPosicaoAcima(posicoes[i-3]);
             }
             if(i == 4 || i == 14 || i == 18 || i == 28)
-            	posicoes[i].setBloqueada(false);
+                posicoes[i].setBloqueada(false);
         }
         posicoes[16].setOcupada(false);
 
-	}
+    }
+
+    public Estatisticas getEstatisticas() {
+        return estatisticas;
+    }
+
+    public Jogador getJogador() {
+        return jogador;
+    }
+
+    public boolean isBloqueado(){
+        for(Posicao pos : posicoes){
+            if(!pos.isBloqueada()){
+                return false;
+            }
+        }
+        return true;
+    }
 
 	public int jogada(int inicial, int destino) throws PosicaoInvalidaException {
 		int comida = posicoes[inicial].valida(posicoes[destino]);
@@ -91,15 +96,6 @@ public class Tabuleiro {
             boolean jogadaDireitaValida = (pos.getPosicaoEsquerda() != null && pos.getPosicaoEsquerda().getPosicaoEsquerda() != null) && pos.valida(pos.getPosicaoEsquerda().getPosicaoEsquerda()) != -1;
             pos.setBloqueada((!jogadaAbaixoValida && !jogadaAcimaValida && !jogadaDireitaValida && !jogadaEsquerdaValida)|| !pos.isOcupada());
         }
-    }
-    
-    public boolean isBloqueado(){
-        for(Posicao pos : posicoes){
-            if(!pos.isBloqueada()){
-                return false;
-            }
-        }
-        return true;
     }
 
 }

@@ -18,10 +18,6 @@ public class Posicao {
         return index;
     }
 
-    public void setIndex(int index) {
-        this.index = index;
-    }
-
     public boolean isOcupada() {
 		return ocupada;
 	}
@@ -62,6 +58,14 @@ public class Posicao {
 		this.posicaoDireita = posicaoDireita;
 	}
 
+    public void setBloqueada(boolean bloqueada) {
+        this.bloqueada = bloqueada;
+    }
+
+    public boolean isBloqueada() {
+        return bloqueada;
+    }
+
 	public int valida(Posicao posicao) {
         if (this.isOcupada()) {
             Posicao abaixo2 = posicaoAbaixo != null? posicaoAbaixo.getPosicaoAbaixo(): null;
@@ -88,11 +92,4 @@ public class Posicao {
         return -1;
     }
 
-    public void setBloqueada(boolean bloqueada) {
-        this.bloqueada = bloqueada;
-    }
-
-    public boolean isBloqueada() {
-        return bloqueada;
-    }
 }

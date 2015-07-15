@@ -4,15 +4,12 @@ import restaum.exception.PosicaoInvalidaException;
 
 public class Jogo {
     private Tabuleiro[] tabuleiros = new Tabuleiro[2];
-    private String vencedor;
 
-    public Jogo(boolean comecoJogando,String[]nomes) {
+    public Jogo(String[] nomes) {
      
     	tabuleiros[0] = new Tabuleiro(nomes[0]);
         tabuleiros[1] = new Tabuleiro(nomes[1]);
     }
-    
-    
 
     public Tabuleiro getTabuleiro(int i){
         return tabuleiros[i];
@@ -40,9 +37,6 @@ public class Jogo {
         
     }
 
-    public void iniciarPartida() {
-    }
-
     private int haVencedor() {
         Jogador jogador1 = tabuleiros[0].getJogador();
         Jogador jogador2 = tabuleiros[1].getJogador();
@@ -57,9 +51,4 @@ public class Jogo {
             return -2;
         }
     }
-    
-    public String getVencedor(){
-    	return vencedor;
-    }
-    
 }

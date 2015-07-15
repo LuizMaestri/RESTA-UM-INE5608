@@ -9,13 +9,12 @@ import br.ufsc.inf.leobr.cliente.exception.*;
 import javax.swing.*;
 
 public class AtorNetGames implements OuvidorProxy {
-    /**
-	 * 
-	 */
+
 	private static final long serialVersionUID = 1L;
 	private TelaJogo telajogo;
     private Proxy proxy;
-    private boolean ehMinhaVez= false;
+    private boolean minhaVez= false;
+
     public AtorNetGames(TelaJogo telajogo) {
         super();
         this.telajogo = telajogo;
@@ -23,9 +22,44 @@ public class AtorNetGames implements OuvidorProxy {
         proxy.addOuvinte(this);
     }
 
+    @Override
+    public void iniciarNovaPartida(Integer posicao) {
+    	if (posicao==1)
+    		minhaVez=true;
+    	if(posicao==2)
+    		minhaVez=false;
+        telajogo.iniciaPartidaRede(minhaVez);
+    }
 
-    public void conectar(String nome, String servidor)
-    {
+    @Override
+    public void finalizarPartidaComErro(String message) {
+
+    }
+
+    @Override
+    public void receberMensagem(String msg) {
+
+    }
+
+    @Override
+    public void receberJogada(Jogada jogada) {
+    	System.out.println("recebeu");
+        JogadaRestaUm jogadaRestaUm1 = (JogadaRestaUm)jogada;
+        telajogo.recebeJogadaNet(jogadaRestaUm1);
+        minhaVez=true;
+    }
+
+    @Override
+    public void tratarConexaoPerdida() {
+
+    }
+
+    @Override
+    public void tratarPartidaNaoIniciada(String message) {
+
+    }
+
+    public void conectar(String nome, String servidor) {
         try {
             proxy.conectar(servidor,nome);
         } catch (JahConectadoException e) {
@@ -39,16 +73,9 @@ public class AtorNetGames implements OuvidorProxy {
 
         }
     }
-    
-    public boolean ehMinhaVez()
-    {
-    	return ehMinhaVez;
-    	
-    }
-    
-    public void setehMinhaVez(boolean é)
-    {
-    	ehMinhaVez=é;
+
+    public boolean isMinhaVez() {
+        return minhaVez;
     }
 
     public void iniciarPartida(){
@@ -66,46 +93,7 @@ public class AtorNetGames implements OuvidorProxy {
         } catch (NaoJogandoException e) {
             JOptionPane.showMessageDialog(null,"Você não está jogando");
         }
-
-        ehMinhaVez=false;
-    }
-
-    @Override
-    public void iniciarNovaPartida(Integer posicao) {
-    	if (posicao==1)
-    		ehMinhaVez=true;
-    	if(posicao==2)
-    		ehMinhaVez=false;
-    telajogo.iniciaPartidaRede(ehMinhaVez);
-    }
-
-    @Override
-    public void finalizarPartidaComErro(String message) {
-
-    }
-
-    @Override
-    public void receberMensagem(String msg) {
-
-    }
-
-    @Override
-    public void receberJogada(Jogada jogada) {
-    	System.out.println("recebeu");
-    JogadaRestaUm jogadaRestaUm1 = (JogadaRestaUm)jogada;
-      telajogo.recebeJogadaNet(jogadaRestaUm1);
-
-      ehMinhaVez=true;
-    }
-
-    @Override
-    public void tratarConexaoPerdida() {
-
-    }
-
-    @Override
-    public void tratarPartidaNaoIniciada(String message) {
-
+        minhaVez=false;
     }
 
     public void desconectar(){
@@ -116,14 +104,12 @@ public class AtorNetGames implements OuvidorProxy {
         }
     }
 
-
-	public String ObterNomeAdversario() {
-		String nome="";
-		if(ehMinhaVez)
-		nome=proxy.obterNomeAdversario(2);
+	public String obterNomeAdversario() {
+		String nome;
+		if(minhaVez)
+		    nome=proxy.obterNomeAdversario(2);
 		else
-		nome=proxy.obterNomeAdversario(1);
+		    nome=proxy.obterNomeAdversario(1);
 		return nome;
-		
 	}
 }
