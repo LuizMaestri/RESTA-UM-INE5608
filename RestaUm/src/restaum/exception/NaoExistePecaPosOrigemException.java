@@ -1,6 +1,6 @@
 package restaum.exception;
 
-public class PosicaoInvalidaException extends Exception {
+public class NaoExistePecaPosOrigemException extends Exception {
 
 	/**
 	 * 

@@ -3,13 +3,16 @@ package restaum.model;
 import restaum.exception.PosicaoInvalidaException;
 
 public class Jogo {
-
     private Tabuleiro[] tabuleiros = new Tabuleiro[2];
+    private String vencedor;
 
-    public Jogo(String[]nomes) {
+    public Jogo(boolean comecoJogando,String[]nomes) {
+     
     	tabuleiros[0] = new Tabuleiro(nomes[0]);
         tabuleiros[1] = new Tabuleiro(nomes[1]);
     }
+    
+    
 
     public Tabuleiro getTabuleiro(int i){
         return tabuleiros[i];
@@ -34,6 +37,10 @@ public class Jogo {
         }catch (PosicaoInvalidaException e){
             return -1;
         }
+        
+    }
+
+    public void iniciarPartida() {
     }
 
     private int haVencedor() {
@@ -50,4 +57,9 @@ public class Jogo {
             return -2;
         }
     }
+    
+    public String getVencedor(){
+    	return vencedor;
+    }
+    
 }

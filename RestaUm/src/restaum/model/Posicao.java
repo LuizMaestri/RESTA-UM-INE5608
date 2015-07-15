@@ -18,6 +18,10 @@ public class Posicao {
         return index;
     }
 
+    public void setIndex(int index) {
+        this.index = index;
+    }
+
     public boolean isOcupada() {
 		return ocupada;
 	}

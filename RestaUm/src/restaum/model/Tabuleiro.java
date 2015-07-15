@@ -2,7 +2,6 @@ package restaum.model;
 
 import restaum.exception.PosicaoInvalidaException;
 
-import java.util.Arrays;
 
 public class Tabuleiro {
 
@@ -10,12 +9,17 @@ public class Tabuleiro {
 	private Estatisticas estatisticas = new Estatisticas();
 	private Jogador jogador;
 
+
 	public Tabuleiro(String nomeJogador) {
 		for (int i = 0; i < posicoes.length; i++) posicoes[i] = new Posicao(i);
 		this.iniciarTabuleiro();
 		estatisticas=new Estatisticas();
 		jogador = new Jogador(nomeJogador);
 	}
+
+    public Posicao[] getPosicoes() {
+        return posicoes;
+    }
 
     public Estatisticas getEstatisticas() {
         return estatisticas;
@@ -54,6 +58,7 @@ public class Tabuleiro {
             	posicoes[i].setBloqueada(false);
         }
         posicoes[16].setOcupada(false);
+
 	}
 
 	public int jogada(int inicial, int destino) throws PosicaoInvalidaException {
@@ -78,7 +83,7 @@ public class Tabuleiro {
         posicoes[comida].setOcupada(false);
     }
 
-    private void bloqueiaPecas(){
+    public void bloqueiaPecas(){
         for(Posicao pos : posicoes){
             boolean jogadaAbaixoValida = (pos.getPosicaoAbaixo() != null && pos.getPosicaoAbaixo().getPosicaoAbaixo() != null) && pos.valida(pos.getPosicaoAbaixo().getPosicaoAbaixo()) != -1;
             boolean jogadaAcimaValida = (pos.getPosicaoAcima() != null && pos.getPosicaoAcima().getPosicaoAcima() != null) && pos.valida(pos.getPosicaoAcima().getPosicaoAcima()) != -1;
@@ -96,4 +101,5 @@ public class Tabuleiro {
         }
         return true;
     }
+
 }

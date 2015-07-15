@@ -1,3 +1,8 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
 package restaum.view;
 
 import restaum.model.Jogo;
@@ -9,8 +14,15 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+/**
+ *
+ * @author faa
+ */
 public class TelaJogo extends javax.swing.JFrame {
 
+    /**
+	 * 
+	 */
 	private static final long serialVersionUID = 1L;
 	private JButton[] pecas = new JButton[33];
     private JButton[] pecasOponente = new JButton[33];
@@ -25,58 +37,120 @@ public class TelaJogo extends javax.swing.JFrame {
     private String servidor="";
     private AtorNetGames atornet;
     private int origem = -1;
-  	private String nomeAdversario="";
-
+  	String nomeAdversario="";
+  	
+    
     public TelaJogo() {
+        
         initComponents();
         this.setVisible(true);
+        
+
+    }
+    public void anunciarVencedor(boolean eu)
+    {	if(eu){
+    	JOptionPane.showMessageDialog(null, "O vencedor é \n Você: "+nome);
+    	perguntaReiniciar();
+    }
+    	else{
+    	JOptionPane.showMessageDialog(null, "O vencedor é \n Adversario: "+nomeAdversario);
+    	perguntaReiniciar();
+    	}
+    }
+    public void perguntaReiniciar()
+    {
+    	if (JOptionPane.showConfirmDialog(null, "Quer Jogar Denovo??", "Pergunta",
+    	        JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
+    	    reiniciarJogo();
+    	} else {
+    	    atornet.desconectar();
+    	    System.exit(1);
+    	}
+    }
+    
+    public void reiniciarJogo()
+    {
+   
+    	for(int i=0;i<pecas.length;i++){
+    	pecas[i].setBackground(Color.YELLOW);
+    	pecasOponente[i].setBackground(Color.YELLOW);
+
+    	}
+    	pecas[16].setBackground(Color.black);
+    	pecasOponente[16].setBackground(Color.black);
+    	textPecas.setText("");
+    	textPecasOponente.setText("");
+    	textTempo.setText("");
+    	atornet.desconectar();
+    	atornet.conectar(nome, servidor);
+    	atornet.iniciarPartida();
+    	
     }
 
     public void iniciaPartidaRede(boolean comecoJogando){
-    	nomeAdversario=atornet.obterNomeAdversario();
+  
+    	
+    	nomeAdversario=atornet.ObterNomeAdversario();
     	String nomes[]=new String [2];
     	nomes[0]=nome;
     	nomes[1]=nomeAdversario;
-    	jogo = new Jogo(nomes);
+    	jogo = new Jogo(comecoJogando,nomes);
     	if(comecoJogando)
-    	    JOptionPane.showMessageDialog(null, "Jogo começou! Você começa! \n Seu oponente é "+nomeAdversario);
+    	JOptionPane.showMessageDialog(null, "Jogo começou! Você começa! \n Seu oponente é "+nomeAdversario);
     	else
     		JOptionPane.showMessageDialog(null, "Jogo começou! O oponente começa!\n Seu oponente é "+nomeAdversario);
+    	
+    
     }
-
-	public void fazJogada(int origem, int destino){
-        int com = jogo.jogada(0,origem,destino);
+    public void pintarJogada(int origem, int destino, int comida){
+		pecas[origem].setBackground(Color.black);
+        pecas[destino].setBackground(Color.yellow);
+        pecas[comida].setBackground(Color.black);
+        pecas[origem].repaint();
+        pecas[destino].repaint();
+        pecas[comida].repaint();
+        textPecas.setText("" + jogo.getTabuleiro(0).getEstatisticas().getPecasComidas());
+        textTempo.setText(""+jogo.getTabuleiro(0).getEstatisticas().tempo());
+    }
+    
+    public void pintarJogadaOponente(int origem, int destino, int comida){
+		pecasOponente[origem].setBackground(Color.black);
+		pecasOponente[destino].setBackground(Color.yellow);
+		pecasOponente[comida].setBackground(Color.black);
+        pecasOponente[origem].repaint();
+        pecasOponente[destino].repaint();
+        pecasOponente[comida].repaint();
+        textPecasOponente.setText("" + jogo.getTabuleiro(1).getEstatisticas().getPecasComidas());
+        textTempo.setText(""+jogo.getTabuleiro(1).getEstatisticas().tempo());
+    }
+	public void fazJogada(int zero, int origem, int c){
+		
+        int com = jogo.jogada(0,origem,c);
         switch (com) {
 		case -1:
 			break;
 		case -2:
-    		atornet.enviarJogada(origem, destino);
-            JOptionPane.showMessageDialog(null, "O vencedor é \n Você: "+nome);
-    		atornet.desconectar();
+    		atornet.enviarJogada(origem, c);
+    		anunciarVencedor(true);
     		break;
-        case -3:
-    		atornet.enviarJogada(origem, destino);
-            JOptionPane.showMessageDialog(null, "O vencedor é \n Adversario: "+nomeAdversario);
-    		atornet.desconectar();
+		case -3:
+    		atornet.enviarJogada(origem, c);
+    		anunciarVencedor(false);
     		break;
 		default:
-			pecas[origem].setBackground(Color.black);
-            pecas[destino].setBackground(Color.yellow);
-            pecas[com].setBackground(Color.black);
-            pecas[origem].repaint();
-            pecas[destino].repaint();
-            pecas[com].repaint();
-            textPecas.setText("" + jogo.getTabuleiro(0).getEstatisticas().getPecasComidas());
-            textTempo.setText(""+jogo.getTabuleiro(0).getEstatisticas().tempo());
-            atornet.enviarJogada(origem, destino);
+			pintarJogada(origem,c,com);
+			atornet.enviarJogada(origem, c);
         }
 	}
     
     private void initComponents() {
+    
     	atornet = new AtorNetGames(this);
         nome = this.insereNome();
         servidor=this.insereServidor();
         atornet.conectar(nome,servidor);
+    	
+    	this.setVisible(true);
         atornet.iniciarPartida();
         for (int i = 0, len = pecas.length; i < len; i++) {
             pecas[i] = new JButton();
@@ -95,9 +169,9 @@ public class TelaJogo extends javax.swing.JFrame {
             pecas[i].addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
-                    if(atornet.isMinhaVez()){
+                    if(atornet.ehMinhaVez()){
                 	if(origem!=-1) {
-                		fazJogada(origem,c);
+                		fazJogada(0,origem,c);
                 		origem = -1;
                     }
                     else
@@ -107,6 +181,8 @@ public class TelaJogo extends javax.swing.JFrame {
                     	JOptionPane.showMessageDialog(null, "Não é sua vez!");}
             });
         }
+        
+        
        
         jLabel1 = new javax.swing.JLabel();
         textPecas = new javax.swing.JTextField("0");
@@ -425,18 +501,24 @@ public class TelaJogo extends javax.swing.JFrame {
                 .addGap(23, 23, 23))
         );
 
+
         pack();
     }
 
-    private String insereNome() {
+
+    
+    public String insereNome() {
         String nome = JOptionPane.showInputDialog("Insira o Nome");
         return nome;
     }
 
-    private String insereServidor() {
+    public String insereServidor() {
         String servidor= JOptionPane.showInputDialog("Insira o servidor");
         return servidor;
     }
+
+
+
 
     public void recebeJogadaNet(JogadaRestaUm jogadaRestaUm1) {
         int destino =  jogadaRestaUm1.getPecadestino();
@@ -447,22 +529,13 @@ public class TelaJogo extends javax.swing.JFrame {
 		case -1:
 			break;
 		case -2:
-			JOptionPane.showMessageDialog(null, "O vencedor é \n Adversario: "+nomeAdversario);
-    		atornet.desconectar();
+			anunciarVencedor(false);
     		break;
 		case -3:
-			JOptionPane.showMessageDialog(null, "O vencedor é \n Você: "+nome);
-    		atornet.desconectar();
+			anunciarVencedor(true);
     		break;
 		default:
-			pecasOponente[origem].setBackground(Color.black);
-            pecasOponente[destino].setBackground(Color.yellow);
-            pecasOponente[com].setBackground(Color.black);
-            pecasOponente[origem].repaint();
-            pecasOponente[destino].repaint();
-            pecasOponente[com].repaint();
-            textPecasOponente.setText("" + jogo.getTabuleiro(1).getEstatisticas().getPecasComidas());
-            textTempo.setText(""+jogo.getTabuleiro(1).getEstatisticas().tempo());
+			pintarJogadaOponente(origem,destino,com);
         }
     }
 }

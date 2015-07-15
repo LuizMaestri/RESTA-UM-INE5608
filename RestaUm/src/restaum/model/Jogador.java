@@ -12,6 +12,14 @@ public class Jogador {
 		qntPecas=32;
 	}
 
+	public String getNome() {
+		return nome;
+	}
+
+	public void setNome(String nome) {
+		this.nome = nome;
+	}
+
 	public void setQntPecas(int qntPecas) {
 		this.qntPecas = qntPecas;
 	}
@@ -32,8 +40,8 @@ public class Jogador {
 		return vencedor;
 	}
 
-	public void setVencedor(boolean vencedor) {
-		this.vencedor = vencedor;
+	public void setVencedor(boolean b) {
+		this.vencedor = b;
 	}
 
 }
