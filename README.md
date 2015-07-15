@@ -4,12 +4,16 @@ projeto implementado para a disciplina INE5608
 ## Especificação de requisitos
 **Projeto:** Resta Um
 ####Especificação de Requisitos de Software:
-  - Versão 1.0
-  - 03/04/2015
+  - Versão 2.0
+  - 05/07/2015
 
 |Versão|     Autor(es)     |   Data   |                   Ação                 |
 |------|-------------------|----------|----------------------------------------|
 | 1.0  |Thaise Santos Souza|03/04/2015|Início do desenvolvimento dos requisitos|
+| 1.1  |Luiz Ricardo F. M. |05/06/2015|Alteração dos RF 01, 02, 04, 05, 06, 08 |
+| 1.2  |Luiz Ricardo F. M. |13/06/2015|Adição do requisito Conectar ao servidor|
+| 1.3  |Luiz Ricardo F. M. |01/07/2015|Remoção do RF Manual e alteração NRF 03 |
+| 2.0  |Luiz Ricardo F. M. |05/07/2015|Revisão final de requisítos e protótipos|
 
 ####Conteúdo:
   1. Introdução
@@ -32,15 +36,16 @@ Referências:
 
 |Cód.   |               Nome                |Descrição| 
 |-------|-----------------------------------|---------|
-|RF 01  |Iniciar                            |O programa deve possuir um botão com o valor “Iniciar”, que ao ser clicado, mostrará na tela a opção para informe dos nomes dos dois jogadores, assim como a escolha do iniciante.|
-|RF 02  |Informe dos jogadores              |Após clicar em “Iniciar”, deve ser possível informar o nome dos dois jogadores da partida.|
-|RF 03  |Escolha do iniciante               |Após o informe dos dois jogadores, deve ser possível escolher qual deles começará a partida.|
-|RF 04  |Início da partida                  |Após a escolha do iniciante a partida começa. Após a primeira jogada, o cronômetro começa a marcar o tempo. Cada partida dura 30 minutos.|
-|RF 05  |Jogada                             |Deve ser possível mover uma peça do tabuleiro, clicando em cima da mesma e arrastando-a para a posição escolhida, finalizando o movimento ao “soltar” o mouse sobre esta posição. As regras de uma jogada: - As peças se movem pulando as outras na horizontal e na vertical, nunca na diagonal. -Para mover-se, uma peça deve pular outra que lhe seja adjacente, caindo numa casa vazia imediatamente seguinte. A peça que foi pulada é retirada do jogo.|
-|RF 05.1|Jogada – posição movimento inválido|Caso o jogador tente arrastar a peça para uma posição inválida  perante as regras do jogo, a peça deve ser “devolvida” à posição de origem. Não será necessário avisar o jogador sobre o procedimento, a movimentação involuntária deve ser um indício do erro.|
-|RF 06  |Estatísticas                       |O programa deve exibir dados estatísticos sobre a partida, tais como: Quantidade de peças (total),Quantidades de peças restantes, Número de movimentos realizados|
-|RF 07  |Manual                             |O programa deve possuir um link para um pequeno manual contendo um resumo do funcionamento do jogo, que deve estar acessível antes mesmo de iniciar a partida.|
-|RF 08  |Finalização da partida             |A partida deve ser finalizada quando restar apenas uma peça no tabuleiro de um dos jogadores, neste caso este será o vencedor, ou quando o cronometro atinge 30 minutos. Para o segundo caso, se nenhum dos jogadores possuir somente uma peça nos seus tabuleiros, o jogador que possuir menos peças será considerado o vencedor da partida. Se os dois possuírem a mesma quantidade de peças no momento que o cronometro atinge o tempo limite, eles empatam. Seguindo as regras acima, assim que o jogo é finalizado, os jogadores devem ser notificados através de uma mensagem sobre o vencimento de um deles ou empate.|
+|RF 01  |Conectar ao Servidor               |O jogador deve ser capaz de se conectar ao servidor por meio de ip ou dns em posse do mesmo|
+|RF 02  |Iniciar                            |Ao Iniciar mostrará tela a opção para informe o nome do jogador, assim como a escolha do iniciante.|
+|RF 03  |Informe dos jogadores              |Deve ser possível informar o nome dos dois jogadores da partida.|
+|RF 04  |Escolha do iniciante               |Após o informe dos dois jogadores, o programa escolherá qual deles começará a partida.|
+|RF 05  |Início da partida                  |Após a escolha do iniciante a partida começa. Após a primeira jogada, o cronômetro começa a marcar o tempo.|
+|RF 06  |Jogada                             |Deve ser possível mover uma peça do tabuleiro, clicando em cima da mesma e após isso clicar na posição escolhida. As regras de uma jogada: - As peças se movem pulando as outras na horizontal e na vertical, nunca na diagonal. -Para mover-se, uma peça deve pular outra que lhe seja adjacente, caindo numa casa vazia imediatamente seguinte. A peça que foi pulada é retirada do jogo.|
+|RF 06.1|Jogada – posição movimento inválido|Caso o jogador tente mover a peça para uma posição inválida  perante as regras do jogo, a peça não se ficará em sua posição de origem. Não será necessário avisar o jogador sobre o procedimento, a não movimentação  deve ser um indício do erro.|
+|RF 07  |Estatísticas                       |O programa deve exibir dados estatísticos sobre a partida, tais como: Tempo total de jogo e número de movimentos realizados|
+|RF 08  |Finalização da partida             |A partida deve ser finalizada quando restar apenas uma peça no tabuleiro de um dos jogadores, neste caso este será o vencedor, ou quando o tabuleiro dos adversario ficar bloqueado. Seguindo as regras acima, assim que o jogo é finalizado, os jogadores devem ser notificados através de uma mensagem sobre o vencimento de um deles|
+
 
 **Requisitos Não Funcionais:**
 
@@ -48,7 +53,7 @@ Referências:
 |Cód.  |            Nome               | Descrição|
 |------|-------------------------------|----------|
 |RNF 01|Especificação de projeto       |Além do código Java, deve ser produzida especificação de projeto baseada em UML, segunda versão.|
-|RNF 02|Interface gráfica              |A interface gráfica deve ser duplicada, seguindo o modelo proposto no protótipo apresentado posteriormente. No início do jogo, apenas a posição central do tabuleiro deve estar vazia.|
-|RNF 03|Tecnologia da interface gráfica|A interface gráfica deve ser duplicada, seguindo o modelo proposto no protótipo apresentado posteriormente. No início do jogo, apenas a posição central do tabuleiro deve estar vazia.|
+|RNF 02|Interface gráfica              |Deve dispor do tabuleiro do jogador e de seu adversário além do tempo de jogo e número de peças comidas de ambos.No início do jogo, apenas a posição central do tabuleiro deve estar vazia.|
+|RNF 03|Tecnologia da interface gráfica|Será desenvolvida em javax Swing|
 
 **Protótipos:**
