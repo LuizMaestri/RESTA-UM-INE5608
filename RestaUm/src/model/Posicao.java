@@ -1,4 +1,4 @@
-package restaum.model;
+package model;
 
 public class Posicao {
 

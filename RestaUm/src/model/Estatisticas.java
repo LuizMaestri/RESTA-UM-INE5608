@@ -1,17 +1,17 @@
-package restaum.model;
+package model;
 
 public class Estatisticas {
 
 	private Integer pecasComidas = 0;
-	private long tempocomeço ;
+	private long tempocomeÃ§o ;
 
 	public Estatisticas(){
-		tempocomeço=System.currentTimeMillis();
+		tempocomeÃ§o=System.currentTimeMillis();
 	}
 	
 	public String tempo(){
         long tempoagora=System.currentTimeMillis();
-		String a= String.format("%.0f",(tempoagora-tempocomeço)/1000.0);
+		String a= String.format("%.0f",(tempoagora-tempocomeÃ§o)/1000.0);
 		a+="seg.";
 		return a;
 	}

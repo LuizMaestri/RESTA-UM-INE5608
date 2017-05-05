@@ -1,6 +1,6 @@
-package restaum.controller;
+package controller;
 
-import restaum.view.TelaJogo;
+import view.TelaJogo;
 
 public class Main {
     public static void main(String[]args) {

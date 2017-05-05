@@ -1,12 +1,16 @@
-package restaum.network;
+package network;
 
-import restaum.view.TelaJogo;
+import javax.swing.JOptionPane;
+
 import br.ufsc.inf.leobr.cliente.Jogada;
 import br.ufsc.inf.leobr.cliente.OuvidorProxy;
 import br.ufsc.inf.leobr.cliente.Proxy;
-import br.ufsc.inf.leobr.cliente.exception.*;
-
-import javax.swing.*;
+import br.ufsc.inf.leobr.cliente.exception.ArquivoMultiplayerException;
+import br.ufsc.inf.leobr.cliente.exception.JahConectadoException;
+import br.ufsc.inf.leobr.cliente.exception.NaoConectadoException;
+import br.ufsc.inf.leobr.cliente.exception.NaoJogandoException;
+import br.ufsc.inf.leobr.cliente.exception.NaoPossivelConectarException;
+import view.TelaJogo;
 
 public class AtorNetGames implements OuvidorProxy {
 
@@ -22,26 +26,22 @@ public class AtorNetGames implements OuvidorProxy {
         proxy.addOuvinte(this);
     }
 
-    @Override
     public void iniciarNovaPartida(Integer posicao) {
     	if (posicao==1)
     		minhaVez=true;
     	if(posicao==2)
     		minhaVez=false;
-        telajogo.iniciaPartidaRede(minhaVez);
+        telajogo.recebeRequisicaoInicio(minhaVez);
     }
 
-    @Override
     public void finalizarPartidaComErro(String message) {
 
     }
 
-    @Override
     public void receberMensagem(String msg) {
 
     }
 
-    @Override
     public void receberJogada(Jogada jogada) {
     	System.out.println("recebeu");
         JogadaRestaUm jogadaRestaUm1 = (JogadaRestaUm)jogada;
@@ -49,29 +49,31 @@ public class AtorNetGames implements OuvidorProxy {
         minhaVez=true;
     }
 
-    @Override
     public void tratarConexaoPerdida() {
 
     }
 
-    @Override
     public void tratarPartidaNaoIniciada(String message) {
 
     }
 
-    public void conectar(String nome, String servidor) {
+    public boolean conectar(String nome, String servidor) {
+        boolean conectado = true;
         try {
             proxy.conectar(servidor,nome);
         } catch (JahConectadoException e) {
-            JOptionPane.showMessageDialog(null,"J· est· conectado");
+            JOptionPane.showMessageDialog(null,"J√° est√° conectado");
+            conectado = true;
         } catch (NaoPossivelConectarException e) {
-            JOptionPane.showMessageDialog(null, "N„o foi possÌvel conectar");
-            System.exit(0);
+            JOptionPane.showMessageDialog(null, "N√£o foi poss√≠vel conectar");
+            conectado = false;
 
         } catch (ArquivoMultiplayerException e) {
-            JOptionPane.showMessageDialog(null, "Problemas com a configuraÁ„o de rede");
-
+            JOptionPane.showMessageDialog(null, "Problemas com a configura√ß√£o de rede");
+            conectado =false;
         }
+        
+        return conectado;
     }
 
     public boolean isMinhaVez() {
@@ -82,16 +84,16 @@ public class AtorNetGames implements OuvidorProxy {
         try {
             proxy.iniciarPartida(2);
         } catch (NaoConectadoException e) {
-            JOptionPane.showMessageDialog(null,"N„o est· conectado");
+            JOptionPane.showMessageDialog(null,"N√£o est√° conectado");
         }
     }
 
-    public void enviarJogada(int pecainicial, int pecadestino){
-        JogadaRestaUm jogadaRestaUm = new JogadaRestaUm(pecainicial,pecadestino);
+    public void enviarJogada(int pecainicial, int pecadestino, int pecaBloqueada){
+        JogadaRestaUm jogadaRestaUm = new JogadaRestaUm(pecainicial,pecadestino,pecaBloqueada);
         try {
             proxy.enviaJogada(jogadaRestaUm);
         } catch (NaoJogandoException e) {
-            JOptionPane.showMessageDialog(null,"VocÍ n„o est· jogando");
+            JOptionPane.showMessageDialog(null,"Voc√™ n√£o est√° jogando");
         }
         minhaVez=false;
     }

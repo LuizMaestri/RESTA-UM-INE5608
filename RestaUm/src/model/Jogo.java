@@ -1,6 +1,6 @@
-package restaum.model;
+package model;
 
-import restaum.exception.PosicaoInvalidaException;
+import exception.PosicaoInvalidaException;
 
 public class Jogo {
     private Tabuleiro[] tabuleiros = new Tabuleiro[2];
@@ -19,7 +19,7 @@ public class Jogo {
         try {
             int comida = tabuleiros[tab].jogada(inicial, destino);
 
-            System.out.println("jogado no tab "+tab+"\n peças comidas: "+tabuleiros[tab].getEstatisticas().getPecasComidas()+"\n peça comida= "+comida);
+            System.out.println("jogado no tab "+tab+"\n peï¿½as comidas: "+tabuleiros[tab].getEstatisticas().getPecasComidas()+"\n peï¿½a comida= "+comida);
            int restante= tabuleiros[tab].getJogador().getQntPecas();
            tabuleiros[tab].getJogador().setQntPecas(restante-1);
            System.out.println(tabuleiros[tab].getJogador().getQntPecas());

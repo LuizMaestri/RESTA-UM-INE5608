@@ -1,6 +1,6 @@
-package restaum.model;
+package model;
 
-import restaum.exception.PosicaoInvalidaException;
+import exception.PosicaoInvalidaException;
 
 
 public class Tabuleiro {

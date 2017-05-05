@@ -1,4 +1,4 @@
-package restaum.exception;
+package exception;
 
 public class PosicaoInvalidaException extends Exception {
 
