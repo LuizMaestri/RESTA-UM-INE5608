@@ -2,9 +2,14 @@
 *.doc
 *.iml
 *.jar
+*.class
+*.bak_000f
+*.bak_001d
+*.properties
 RestaUm/bin/
 .idea/
 RestaUm/.settings/
 RestaUm/.project
 RestaUm/.classpath
 
+/target/

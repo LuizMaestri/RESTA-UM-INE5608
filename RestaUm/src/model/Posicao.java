@@ -7,7 +7,18 @@ public class Posicao {
 	private Posicao posicaoAbaixo;
 	private Posicao posicaoEsquerda;
 	private Posicao posicaoDireita;
-    private boolean bloqueada = true;
+    private boolean interditada = true;
+    private boolean bloqueada = false;
+    
+    
+    public boolean isBloqueada() {
+        return bloqueada;
+    }
+
+    public void setBloqueada(boolean bloqueada) {
+        this.bloqueada = bloqueada;
+    }
+
     private int index;
 
     public Posicao(int index) {
@@ -58,12 +69,12 @@ public class Posicao {
 		this.posicaoDireita = posicaoDireita;
 	}
 
-    public void setBloqueada(boolean bloqueada) {
-        this.bloqueada = bloqueada;
+    public void setInterditada(boolean bloqueada) {
+        this.interditada = bloqueada;
     }
 
-    public boolean isBloqueada() {
-        return bloqueada;
+    public boolean isInterditada() {
+        return interditada;
     }
 
 	public int valida(Posicao posicao) {

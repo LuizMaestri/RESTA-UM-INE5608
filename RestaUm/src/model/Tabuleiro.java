@@ -6,7 +6,9 @@ import exception.PosicaoInvalidaException;
 public class Tabuleiro {
 
 	private Posicao[] posicoes = new Posicao[33];
-	private Estatisticas estatisticas = new Estatisticas();
+	private int posicaoBloqueada=-1;
+    private int rodadaBloqueio=0;
+    private Estatisticas estatisticas = new Estatisticas();
 	private Jogador jogador;
 
 
@@ -43,7 +45,7 @@ public class Tabuleiro {
                     posicoes[i].setPosicaoAcima(posicoes[i-3]);
             }
             if(i == 4 || i == 14 || i == 18 || i == 28)
-                posicoes[i].setBloqueada(false);
+                posicoes[i].setInterditada(false);
         }
         posicoes[16].setOcupada(false);
 
@@ -59,7 +61,7 @@ public class Tabuleiro {
 
     public boolean isBloqueado(){
         for(Posicao pos : posicoes){
-            if(!pos.isBloqueada()){
+            if(!pos.isInterditada()){
                 return false;
             }
         }
@@ -69,13 +71,20 @@ public class Tabuleiro {
 	public int jogada(int inicial, int destino) throws PosicaoInvalidaException {
 		int comida = posicoes[inicial].valida(posicoes[destino]);
         if (comida != -1) {
+            if(!habloqueioImpedindo(inicial, destino, comida)){
             alterarPosicao(inicial, destino, comida);
-            bloqueiaPecas();
+            calculaInterdicaoPecas();
             estatisticas.setPecasComidas(estatisticas.getPecasComidas() + 1);
             alteraJogador();
             return comida;
-        }else
+        }
+        }
             throw new PosicaoInvalidaException();
+	}
+	
+	public boolean habloqueioImpedindo(int inicial, int destino, int comida){
+	    return posicoes[comida].isBloqueada() || posicoes [inicial].isBloqueada() || posicoes[destino].isBloqueada();
+	    
 	}
 
 	private void alteraJogador() {
@@ -88,14 +97,46 @@ public class Tabuleiro {
         posicoes[comida].setOcupada(false);
     }
 
-    public void bloqueiaPecas(){
+    public void calculaInterdicaoPecas(){
         for(Posicao pos : posicoes){
             boolean jogadaAbaixoValida = (pos.getPosicaoAbaixo() != null && pos.getPosicaoAbaixo().getPosicaoAbaixo() != null) && pos.valida(pos.getPosicaoAbaixo().getPosicaoAbaixo()) != -1;
             boolean jogadaAcimaValida = (pos.getPosicaoAcima() != null && pos.getPosicaoAcima().getPosicaoAcima() != null) && pos.valida(pos.getPosicaoAcima().getPosicaoAcima()) != -1;
             boolean jogadaEsquerdaValida = (pos.getPosicaoDireita() != null && pos.getPosicaoDireita().getPosicaoDireita() != null) && pos.valida(pos.getPosicaoDireita().getPosicaoDireita()) != -1;
             boolean jogadaDireitaValida = (pos.getPosicaoEsquerda() != null && pos.getPosicaoEsquerda().getPosicaoEsquerda() != null) && pos.valida(pos.getPosicaoEsquerda().getPosicaoEsquerda()) != -1;
-            pos.setBloqueada((!jogadaAbaixoValida && !jogadaAcimaValida && !jogadaDireitaValida && !jogadaEsquerdaValida)|| !pos.isOcupada());
+            pos.setInterditada((!jogadaAbaixoValida && !jogadaAcimaValida && !jogadaDireitaValida && !jogadaEsquerdaValida)|| !pos.isOcupada());
         }
     }
+
+    public void bloqueiaPeca(int peca,int rodada) {
+        posicoes[peca].setBloqueada(true);
+        this.posicaoBloqueada = peca;
+        this.rodadaBloqueio = rodada;
+    }
+
+    public void desbloqueiaPeca(int posBloqueada) {
+        posicoes[posBloqueada].setBloqueada(false);
+        this.posicaoBloqueada = -1;
+        this.rodadaBloqueio = -1;
+        
+    }
+    
+    public int getRodadaBloqueio() {
+        return rodadaBloqueio;
+    }
+
+    public void setRodadaBloqueio(int rodadaBloqueio) {
+        this.rodadaBloqueio = rodadaBloqueio;
+    }
+
+    public int getPosicaoBloqueada() {
+        return posicaoBloqueada;
+    }
+
+    public void setPosicaoBloqueada(int posicaoBloqueada) {
+        this.posicaoBloqueada = posicaoBloqueada;
+    }
+
+
+
 
 }

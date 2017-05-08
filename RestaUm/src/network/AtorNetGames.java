@@ -10,12 +10,15 @@ import br.ufsc.inf.leobr.cliente.exception.JahConectadoException;
 import br.ufsc.inf.leobr.cliente.exception.NaoConectadoException;
 import br.ufsc.inf.leobr.cliente.exception.NaoJogandoException;
 import br.ufsc.inf.leobr.cliente.exception.NaoPossivelConectarException;
+import model.Jogo;
 import view.TelaJogo;
 
 public class AtorNetGames implements OuvidorProxy {
 
 	private static final long serialVersionUID = 1L;
-	private TelaJogo telajogo;
+	private String nome;
+    private TelaJogo telajogo;
+	private Jogo jogo;
     private Proxy proxy;
     private boolean minhaVez= false;
 
@@ -31,11 +34,17 @@ public class AtorNetGames implements OuvidorProxy {
     		minhaVez=true;
     	if(posicao==2)
     		minhaVez=false;
-        telajogo.recebeRequisicaoInicio(minhaVez);
+    	
+    	String nomes[]= new String[2];
+    	nomes[0]=nome;
+    	nomes[1]=this.obterNomeAdversario();
+    	jogo = new Jogo(nomes,telajogo,this);
+    	telajogo.setJogo(jogo);
+        telajogo.exibeMensagemJogoComecou(minhaVez);
     }
 
     public void finalizarPartidaComErro(String message) {
-
+       telajogo.anunciarVencedor(true,true);
     }
 
     public void receberMensagem(String msg) {
@@ -45,19 +54,19 @@ public class AtorNetGames implements OuvidorProxy {
     public void receberJogada(Jogada jogada) {
     	System.out.println("recebeu");
         JogadaRestaUm jogadaRestaUm1 = (JogadaRestaUm)jogada;
-        telajogo.recebeJogadaNet(jogadaRestaUm1);
+        jogo.realizaJogada(jogadaRestaUm1);
         minhaVez=true;
     }
 
     public void tratarConexaoPerdida() {
-
     }
 
     public void tratarPartidaNaoIniciada(String message) {
-
+        telajogo.anunciaEmEspera();
     }
 
     public boolean conectar(String nome, String servidor) {
+        this.nome=nome;
         boolean conectado = true;
         try {
             proxy.conectar(servidor,nome);
@@ -114,4 +123,12 @@ public class AtorNetGames implements OuvidorProxy {
 		    nome=proxy.obterNomeAdversario(1);
 		return nome;
 	}
+	
+	   public String getNome() {
+	        return nome;
+	    }
+
+	    public void setNome(String nome) {
+	        this.nome = nome;
+	    }
 }
