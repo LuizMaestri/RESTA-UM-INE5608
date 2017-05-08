@@ -80,7 +80,7 @@ public class AtorNetGames implements OuvidorProxy {
         return minhaVez;
     }
 
-    public void iniciarPartida(){
+    public void solicitarInicio(){
         try {
             proxy.iniciarPartida(2);
         } catch (NaoConectadoException e) {

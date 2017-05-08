@@ -16,15 +16,17 @@ public class TelaJogo extends javax.swing.JFrame {
 	private static final long serialVersionUID = 1L;
 	private JButton[] pecas = new JButton[33];
     private JButton[] pecasOponente = new JButton[33];
+    private JButton botaoSair = new JButton();
+    private JButton botaoDesconectar = new JButton();
     private javax.swing.JTextField textPecas;
     private javax.swing.JTextField textPecasOponente;
     private javax.swing.JTextField textTempo;
-    private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel labelPecasComidasMinhas;
+    private javax.swing.JLabel labelTempoJogo;
+    private javax.swing.JLabel labelPecasComidasOponentes;
     private Jogo jogo;
-    private String nome="";
-    private String servidor="";
+    private String nome;
+    private String servidor;
     private AtorNetGames atorNet;
     private int origem = -1;
   	String nomeAdversario="";
@@ -34,58 +36,17 @@ public class TelaJogo extends javax.swing.JFrame {
         this.MostraEntrada();
     }
 
-    private void initComponents() {
+    private void iniciaComponentesGraficos() {
+    	atorNet.solicitarInicio();
+    	setTitle("RESTA UM :)");
         this.setVisible(true);
-        atorNet.iniciarPartida();
-        JButton botaoSair = this.criaBotaoSair();
-        JButton botaoDesconectar = this.criaBotaoDesconectar();
-        for (int i = 0, len = pecas.length; i < len; i++) {
-            pecas[i] = new JButton();
-            pecasOponente[i] = new JButton();
-            if (i !=16){
-                pecas[i].setBackground(Color.YELLOW);
-                pecasOponente[i].setBackground(Color.YELLOW);
-            }else {
-                pecas[i].setBackground(Color.BLACK);
-                pecasOponente[i].setBackground(Color.BLACK);
-            }
-        }
-        for(int i=0;i<pecas.length;i++) {
-            final int c = i;
-            pecas[i].addActionListener(new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    if(atorNet.isMinhaVez()){
-                        if(origem!=-1) {
-                            fazJogada(origem,c);
-                            origem = -1;
-                        }
-                        else
-                            origem=c;
-                    }
-                    else
-                        JOptionPane.showMessageDialog(null, "Não é sua vez!");}
-            });
-        }
-        jLabel1 = new javax.swing.JLabel();
-        textPecas = new javax.swing.JTextField("0");
-        jLabel2 = new javax.swing.JLabel();
-        textTempo = new javax.swing.JTextField("0:00");
-        jLabel3 = new javax.swing.JLabel();
-        textPecasOponente = new javax.swing.JTextField("0");
+        this.criaBotaoSair();
+        this.criaBotaoDesconectar();
+        this.criaPecasMinhas();
+        this.criaPecasOponente();
+        this.criaLabelsECampos();
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        jLabel1.setText("Peças Comidas:");
-        textPecas.setEditable(false);
-        textPecas.setBackground(new java.awt.Color(255, 255, 255));
-        jLabel2.setText("Tempo De Jogo:");
-        textTempo.setEditable(false);
-        textTempo.setBackground(new java.awt.Color(255, 255, 255));
-        for (JButton button : pecasOponente) button.setEnabled(false);
-        jLabel3.setText("Peças Comidas:");
-        textPecasOponente.setEditable(false);
-        textPecasOponente.setBackground(new java.awt.Color(255, 255, 255));
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        setTitle("RESTA UM");
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
                 layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -106,7 +67,7 @@ public class TelaJogo extends javax.swing.JFrame {
                                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                                 .addComponent(pecas[5], javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
                                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                                .addComponent(jLabel1)
+                                                .addComponent(labelPecasComidasMinhas)
                                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(textPecas, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -177,7 +138,7 @@ public class TelaJogo extends javax.swing.JFrame {
                                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                                 .addGap(32, 32, 32)
-                                .addComponent(jLabel3)
+                                .addComponent(labelPecasComidasOponentes)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(textPecasOponente, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -256,7 +217,7 @@ public class TelaJogo extends javax.swing.JFrame {
                                 .addGap(36, 36, 36))
                         .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(jLabel2)
+                                .addComponent(labelTempoJogo)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(textTempo, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(224, 224, 224))
@@ -274,7 +235,7 @@ public class TelaJogo extends javax.swing.JFrame {
                                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                                                .addComponent(jLabel1)
+                                                                .addComponent(labelPecasComidasMinhas)
                                                                 .addComponent(textPecas, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                                                                 .addComponent(botaoSair)
                                                                 .addComponent(botaoDesconectar)
@@ -323,7 +284,7 @@ public class TelaJogo extends javax.swing.JFrame {
                                                                         .addComponent(pecas[32], javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE))))
                                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                                 .addComponent(textTempo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                        .addComponent(jLabel2))
+                                        .addComponent(labelTempoJogo))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 8, Short.MAX_VALUE)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                         .addComponent(pecasOponente[2], javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -357,7 +318,7 @@ public class TelaJogo extends javax.swing.JFrame {
                                                         .addComponent(pecasOponente[19], javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)))
                                         .addGroup(layout.createSequentialGroup()
                                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                                        .addComponent(jLabel3)
+                                                        .addComponent(labelPecasComidasOponentes)
                                                         .addComponent(textPecasOponente, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                                                 .addGap(25, 25, 25)))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -384,9 +345,66 @@ public class TelaJogo extends javax.swing.JFrame {
         pack();
     }
 
-    private JButton criaBotaoDesconectar() {
-        JButton btDesconectar = new JButton("Desconectar");
-        btDesconectar.addActionListener(new ActionListener() {
+    private void criaLabelsECampos() {
+        labelPecasComidasMinhas = new javax.swing.JLabel();
+        textPecas = new javax.swing.JTextField("0");
+        labelTempoJogo = new javax.swing.JLabel();
+        textTempo = new javax.swing.JTextField("0:00");
+        labelPecasComidasOponentes = new javax.swing.JLabel();
+        textPecasOponente = new javax.swing.JTextField("0");
+        labelPecasComidasMinhas.setText("Peças Comidas:");
+        textPecas.setEditable(false);
+        textPecas.setBackground(new java.awt.Color(255, 255, 255));
+        labelTempoJogo.setText("Tempo De Jogo:");
+        textTempo.setEditable(false);
+        textTempo.setBackground(new java.awt.Color(255, 255, 255));
+        labelPecasComidasOponentes.setText("Peças Comidas:");
+        textPecasOponente.setEditable(false);
+        textPecasOponente.setBackground(new java.awt.Color(255, 255, 255));		
+	}
+
+	private void criaPecasMinhas() {
+    	for(int i=0;i<pecas.length;i++) {
+    		pecas[i] = new JButton();
+            final int c = i;
+            pecas[i].addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    if(atorNet.isMinhaVez()){
+                        if(origem!=-1) {
+                            jogo.jogada(0,origem,c);
+                            origem = -1;
+                        }
+                        else
+                            origem=c;
+                    }
+                    else
+                        JOptionPane.showMessageDialog(null, "Não é sua vez!");}
+            });
+            
+            if (i !=16){
+                pecas[i].setBackground(Color.YELLOW);
+            }else {
+                pecas[i].setBackground(Color.BLACK);
+            }
+        }
+        
+	}
+
+	private void criaPecasOponente() {
+        for (int i = 0, len = pecasOponente.length; i < len; i++) {
+            pecasOponente[i] = new JButton();
+            if (i !=16){
+                pecasOponente[i].setBackground(Color.YELLOW);
+            }else {
+                pecasOponente[i].setBackground(Color.BLACK);
+            }
+        }
+    }
+
+	private void criaBotaoDesconectar() {
+        botaoDesconectar.setText("Desconectar");
+        botaoDesconectar.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                     if(JOptionPane.showConfirmDialog(null, "Deseja mesmo Desconectar?","Certeza?",JOptionPane.YES_NO_OPTION)==JOptionPane.YES_OPTION){
@@ -397,12 +415,11 @@ public class TelaJogo extends javax.swing.JFrame {
         }
                     }
         });
-        return btDesconectar;
     }
 
-    private JButton criaBotaoSair() {
-        JButton btSair = new JButton("Sair");
-        btSair.addActionListener(new ActionListener() {
+    private void criaBotaoSair() {
+    	botaoSair.setText("Sair");
+        botaoSair.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                     if(JOptionPane.showConfirmDialog(null, "Deseja mesmo sair?","Certeza?",JOptionPane.YES_NO_OPTION)==JOptionPane.YES_OPTION){
@@ -411,7 +428,6 @@ public class TelaJogo extends javax.swing.JFrame {
         }
                     }
         });
-        return btSair;
     }
 
     private void MostraEntrada() {
@@ -430,7 +446,7 @@ public class TelaJogo extends javax.swing.JFrame {
         boolean conectado = atorNet.conectar(nome, servidor); 
         
         if (conectado)
-            this.initComponents();
+            this.iniciaComponentesGraficos();
         else
             this.MostraEntrada();
         }
@@ -465,7 +481,7 @@ public class TelaJogo extends javax.swing.JFrame {
     	textTempo.setText("");
     	atorNet.desconectar();
     	atorNet.conectar(nome, servidor);
-    	atorNet.iniciarPartida();
+    	atorNet.solicitarInicio();
     }
     
     public void fechaJanela(){
@@ -477,7 +493,7 @@ public class TelaJogo extends javax.swing.JFrame {
     	String nomes[]=new String [2];
     	nomes[0]=nome;
     	nomes[1]=nomeAdversario;
-    	jogo = new Jogo(nomes);
+    	jogo = new Jogo(nomes,this);
     	if(comecoJogando)
             JOptionPane.showMessageDialog(null, "Jogo começou! Você começa! \n Seu oponente é "+nomeAdversario);
     	else
