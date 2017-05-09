@@ -97,7 +97,7 @@ public class Jogo {
         }
     }
 
-    public void realizaJogada(JogadaRestaUm jogadaRestaUm1) {
+    public void recebeJogada(JogadaRestaUm jogadaRestaUm1) {
         this.liberaPecasBloqueadas();
         int inicial = jogadaRestaUm1.getPecaInicial();
         int destino = jogadaRestaUm1.getPecaDestino();

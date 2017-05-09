@@ -54,7 +54,7 @@ public class AtorNetGames implements OuvidorProxy {
     public void receberJogada(Jogada jogada) {
     	System.out.println("recebeu");
         JogadaRestaUm jogadaRestaUm1 = (JogadaRestaUm)jogada;
-        jogo.realizaJogada(jogadaRestaUm1);
+        jogo.recebeJogada(jogadaRestaUm1);
         minhaVez=true;
     }
 
