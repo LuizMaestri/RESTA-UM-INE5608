@@ -34,6 +34,7 @@ public class Jogo {
 
         switch (comida) {
         case -1:
+            tela.avisaJogadaInvalida();
             break;
         case -2:
             this.liberaPecasBloqueadas();
@@ -76,7 +77,6 @@ public class Jogo {
                 return comida;
             }
         } catch (PosicaoInvalidaException e) {
-            tela.avisaJogadaInvalida();
             return -1;
         }
 

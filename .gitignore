@@ -3,7 +3,7 @@
 *.iml
 *.jar
 *.class
-*.bak_000f
+*.bak_*
 *.bak_001d
 *.properties
 RestaUm/bin/
