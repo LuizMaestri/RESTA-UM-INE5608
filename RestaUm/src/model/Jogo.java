@@ -1,6 +1,5 @@
 package model;
 
-import exception.PosicaoInvalidaException;
 import network.AtorNetGames;
 import network.JogadaRestaUm;
 import view.TelaJogo;
@@ -30,56 +29,33 @@ public class Jogo {
 
     public void jogada(int inicial, int destino) {
 
-        int comida = this.fazJogada(0, inicial, destino);
-
-        switch (comida) {
-        case -1:
+        if (!tabuleiros[0].eJogadaValida(inicial, destino)) {
             tela.avisaJogadaInvalida();
-            break;
-        case -2:
-            this.liberaPecasBloqueadas();
-            this.enviaJogadaAoNetGames(inicial, destino, -1);
-            tela.anunciarVencedor(true, false);
-            break;
-        case -3:
-            this.liberaPecasBloqueadas();
-            this.enviaJogadaAoNetGames(inicial, destino, -1);
-            tela.anunciarVencedor(false, false);
-            break;
-        default:
-            this.liberaPecasBloqueadas();
-            tela.pintarJogada(inicial, destino, comida);
-            this.enviaJogadaAoNetGames(inicial, destino, -1);
+            return;
         }
+        int comida = this.fazJogada(0, inicial, destino);
+        tela.pintarJogada(inicial, destino, comida);
+        this.enviaJogadaAoNetGames(inicial, destino, -1);
 
     }
 
     public int fazJogada(int tab, int inicial, int destino) {
 
-        try {
-
-            int comida = tabuleiros[tab].jogada(inicial, destino);
-
-            System.out.println(
-                    "jogado no tab " + tab + "\n peças comidas: " + tabuleiros[tab].getEstatisticas().getPecasComidas() + "\n peças comidas= " + comida);
-
-            int restante = tabuleiros[tab].getJogador().getQntPecas();
-            tabuleiros[tab].getJogador().setQntPecas(restante - 1);
-            System.out.println(tabuleiros[tab].getJogador().getQntPecas());
-            switch (haVencedor()) {
-            case "VENCE":
-                return -2;
-            case "PERDE":
-                return -3;
-            default:
-                rodada++;
-                System.out.println("Rodada = " + rodada);
-                return comida;
-            }
-        } catch (PosicaoInvalidaException e) {
-            return -1;
+        this.liberaPecasBloqueadas();
+        int comida = tabuleiros[tab].jogada(inicial, destino);
+        System.out.println("jogado no tab " + tab + "\n peças comidas: " + tabuleiros[tab].getEstatisticas().getPecasComidas() + "\n peças comidas= " + comida);
+        int restante = tabuleiros[tab].getJogador().getQntPecas();
+        tabuleiros[tab].getJogador().setQntPecas(restante - 1);
+        System.out.println(tabuleiros[tab].getJogador().getQntPecas());
+        switch (haVencedor()) {
+        case "VENCE":
+            tela.anunciarVencedor(true, false);
+        case "PERDE":
+            tela.anunciarVencedor(false, false);
         }
-
+        rodada++;
+        System.out.println("Rodada = " + rodada);
+        return comida;
     }
 
     private String haVencedor() {
@@ -98,7 +74,6 @@ public class Jogo {
     }
 
     public void recebeJogada(JogadaRestaUm jogadaRestaUm1) {
-        this.liberaPecasBloqueadas();
         int inicial = jogadaRestaUm1.getPecaInicial();
         int destino = jogadaRestaUm1.getPecaDestino();
         int bloqueada = jogadaRestaUm1.getPecaBloqueada();
@@ -113,19 +88,19 @@ public class Jogo {
 
     private void liberaPecasBloqueadas() {
 
-            int posBloqueada = tabuleiros[1].getPosicaoBloqueada();
-            if (tabuleiros[1].getPosicaoBloqueada() != -1 && tabuleiros[1].getRodadaBloqueio() < rodada) {
-                tabuleiros[1].desbloqueiaPeca(posBloqueada);
-                tela.pintaDesbloqueio(posBloqueada);
-            }
-            posBloqueada = tabuleiros[0].getPosicaoBloqueada();
-            if (tabuleiros[0].getPosicaoBloqueada() != -1 && tabuleiros[0].getRodadaBloqueio() < rodada) {
-                tabuleiros[0].desbloqueiaPeca(posBloqueada);
-                tela.pintaDesbloqueioOponente(posBloqueada);
-            }
+        int posBloqueada = tabuleiros[1].getPosicaoBloqueada();
+        if (tabuleiros[1].getPosicaoBloqueada() != -1 && tabuleiros[1].getRodadaBloqueio() < rodada) {
+            tabuleiros[1].desbloqueiaPeca(posBloqueada);
+            tela.pintaDesbloqueio(posBloqueada);
         }
-    
-    private void enviaJogadaAoNetGames(int pecainicial, int pecadestino, int pecaBloqueada){
+        posBloqueada = tabuleiros[0].getPosicaoBloqueada();
+        if (tabuleiros[0].getPosicaoBloqueada() != -1 && tabuleiros[0].getRodadaBloqueio() < rodada) {
+            tabuleiros[0].desbloqueiaPeca(posBloqueada);
+            tela.pintaDesbloqueioOponente(posBloqueada);
+        }
+    }
+
+    private void enviaJogadaAoNetGames(int pecainicial, int pecadestino, int pecaBloqueada) {
         atorNet.enviarJogada(pecainicial, pecadestino, pecaBloqueada);
     }
 

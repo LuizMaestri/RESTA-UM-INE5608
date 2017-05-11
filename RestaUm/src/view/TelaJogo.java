@@ -459,8 +459,9 @@ public class TelaJogo extends javax.swing.JFrame {
                         } else
                             origem = c;
                     } else
-                        JOptionPane.showMessageDialog(null, "Não é sua vez!");
+                        avisaNaoESuaVez();
                 }
+
             });
 
             if (i != 16) {
@@ -470,6 +471,9 @@ public class TelaJogo extends javax.swing.JFrame {
             }
         }
 
+    }
+    private void avisaNaoESuaVez() {
+        JOptionPane.showMessageDialog(null, "Não é sua vez!");
     }
 
     private void criaPecasOponente() {
@@ -482,7 +486,7 @@ public class TelaJogo extends javax.swing.JFrame {
                     if (atorNet.isMinhaVez()&&jogo.podeBloquear()) {
                             jogo.bloqueia(c);
                     } else
-                        JOptionPane.showMessageDialog(null, "Não é sua vez!");
+                      avisaNaoESuaVez();
                 }
             });
             
@@ -559,6 +563,7 @@ public class TelaJogo extends javax.swing.JFrame {
         }
         else
             JOptionPane.showMessageDialog(null, "O vencedor é \n Adversário!");
+        
     }
 
     public void fechaJanela() {

@@ -1,8 +1,5 @@
 package model;
 
-import exception.PosicaoInvalidaException;
-
-
 public class Tabuleiro {
 
 	private Posicao[] posicoes = new Posicao[33];
@@ -68,18 +65,18 @@ public class Tabuleiro {
         return true;
     }
 
-	public int jogada(int inicial, int destino) throws PosicaoInvalidaException {
+	public int jogada(int inicial, int destino){
 		int comida = posicoes[inicial].valida(posicoes[destino]);
-        if (comida != -1) {
-            if(!habloqueioImpedindo(inicial, destino, comida)){
             alterarPosicao(inicial, destino, comida);
             calculaInterdicaoPecas();
             estatisticas.setPecasComidas(estatisticas.getPecasComidas() + 1);
             alteraJogador();
             return comida;
-        }
-        }
-            throw new PosicaoInvalidaException();
+	}
+	
+	public boolean eJogadaValida(int inicial, int destino){
+	    int comida = posicoes[inicial].valida(posicoes[destino]);
+	    return comida!= -1 && this.habloqueioImpedindo(inicial, destino, comida);
 	}
 	
 	public boolean habloqueioImpedindo(int inicial, int destino, int comida){
