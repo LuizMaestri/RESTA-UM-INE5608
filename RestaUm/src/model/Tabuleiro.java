@@ -106,14 +106,17 @@ public class Tabuleiro {
 
     public void bloqueiaPeca(int peca,int rodada) {
         posicoes[peca].setBloqueada(true);
+        this.atualizaPecaBloqueada(peca, rodada);
+    }
+    
+    private void atualizaPecaBloqueada(int peca, int rodada){
         this.posicaoBloqueada = peca;
         this.rodadaBloqueio = rodada;
     }
 
     public void desbloqueiaPeca(int posBloqueada) {
         posicoes[posBloqueada].setBloqueada(false);
-        this.posicaoBloqueada = -1;
-        this.rodadaBloqueio = -1;
+        this.atualizaPecaBloqueada(-1, -1);
         
     }
     
@@ -131,6 +134,10 @@ public class Tabuleiro {
 
     public void setPosicaoBloqueada(int posicaoBloqueada) {
         this.posicaoBloqueada = posicaoBloqueada;
+    }
+
+    public void diminuiNumeroPecasJogador() {
+        this.getJogador().setQntPecas(getJogador().getQntPecas()-1);
     }
 
 

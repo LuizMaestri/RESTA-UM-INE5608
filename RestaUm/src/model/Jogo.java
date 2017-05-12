@@ -44,8 +44,7 @@ public class Jogo {
         this.liberaPecasBloqueadas();
         int comida = tabuleiros[tab].jogada(inicial, destino);
         System.out.println("jogado no tab " + tab + "\n peças comidas: " + tabuleiros[tab].getEstatisticas().getPecasComidas() + "\n peças comidas= " + comida);
-        int restante = tabuleiros[tab].getJogador().getQntPecas();
-        tabuleiros[tab].getJogador().setQntPecas(restante - 1);
+        tabuleiros[tab].diminuiNumeroPecasJogador();
         System.out.println(tabuleiros[tab].getJogador().getQntPecas());
         switch (haVencedor()) {
         case "VENCE":
@@ -53,7 +52,7 @@ public class Jogo {
         case "PERDE":
             tela.anunciarVencedor(false, false);
         }
-        rodada++;
+        this.incrementaRodada();;
         System.out.println("Rodada = " + rodada);
         return comida;
     }
@@ -109,18 +108,21 @@ public class Jogo {
     }
 
     public void bloqueia(int peca) {
-        rodada++;
         this.realizaBloqueio(1, peca);
         tela.pintaBloqueio(peca);
         this.enviaJogadaAoNetGames(-1, -1, peca);
     }
 
+    private void incrementaRodada() {
+        rodada++;
+    }
+
     public void realizaBloqueio(int tab, int peca) {
+        this.incrementaRodada();;
         tabuleiros[tab].bloqueiaPeca(peca, rodada);
     }
 
     public void recebeBloqueio(int peca) {
-        rodada++;
         this.realizaBloqueio(0, peca);
         tela.pintaBloqueioOponente(peca);
     }
