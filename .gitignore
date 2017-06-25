@@ -2,6 +2,9 @@
 *.doc
 *.iml
 *.jar
+*.classpath
+*.MF
+*.properties
 *.class
 *.bak_*
 *.bak_001d
