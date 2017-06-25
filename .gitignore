@@ -5,6 +5,7 @@
 *.class
 *.bak_*
 *.bak_001d
+*.lck
 *.properties
 RestaUm/bin/
 .idea/
