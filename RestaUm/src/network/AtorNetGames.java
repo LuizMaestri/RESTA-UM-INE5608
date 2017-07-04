@@ -40,6 +40,7 @@ public class AtorNetGames implements OuvidorProxy {
     	nomes[1]=this.obterNomeAdversario();
     	jogo = new Jogo(nomes,telajogo,this);
     	telajogo.setJogo(jogo);
+    	telajogo.setNomeAdversario(nomes[1]);
         telajogo.exibeMensagemJogoComecou(minhaVez);
     }
 

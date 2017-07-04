@@ -21,7 +21,7 @@ public class TelaJogo extends javax.swing.JFrame {
     private javax.swing.JTextField textPecasOponente;
     private javax.swing.JTextField textRodada;
     private javax.swing.JLabel labelPecasComidasMinhas;
-    private javax.swing.JLabel labelTempoJogo;
+    private javax.swing.JLabel labelRodada;
     private javax.swing.JLabel labelPecasComidasOponentes;
     private Jogo jogo;
     private String nome;
@@ -35,7 +35,6 @@ public class TelaJogo extends javax.swing.JFrame {
     }
 
     private void iniciaComponentesGraficos() {
-        atorNet.solicitarInicio();
         setTitle("RESTA UM :)");
         this.setVisible(true);
         this.criaBotaoSair();
@@ -253,7 +252,7 @@ public class TelaJogo extends javax.swing.JFrame {
                                         .addGap(36, 36, 36))
                         .addGroup(javax.swing.GroupLayout.Alignment.TRAILING,
                                 layout.createSequentialGroup().addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                        .addComponent(labelTempoJogo).addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(labelRodada).addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                         .addComponent(textRodada, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
                                         .addGap(224, 224, 224)));
         layout.setVerticalGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -350,7 +349,7 @@ public class TelaJogo extends javax.swing.JFrame {
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED).addComponent(textRodada,
                                                 javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE,
                                                 javax.swing.GroupLayout.PREFERRED_SIZE))
-                                        .addComponent(labelTempoJogo))
+                                        .addComponent(labelRodada))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 8, Short.MAX_VALUE)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                         .addComponent(pecasOponente[2], javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -430,14 +429,14 @@ public class TelaJogo extends javax.swing.JFrame {
     private void criaLabelsECampos() {
         labelPecasComidasMinhas = new javax.swing.JLabel();
         textPecas = new javax.swing.JTextField("0");
-        labelTempoJogo = new javax.swing.JLabel();
+        labelRodada = new javax.swing.JLabel();
         textRodada = new javax.swing.JTextField("0");
         labelPecasComidasOponentes = new javax.swing.JLabel();
         textPecasOponente = new javax.swing.JTextField("0");
         labelPecasComidasMinhas.setText("Peças Comidas:");
         textPecas.setEditable(false);
         textPecas.setBackground(new java.awt.Color(255, 255, 255));
-        labelTempoJogo.setText("Tempo De Jogo:");
+        labelRodada.setText("Rodada:");
         textRodada.setEditable(false);
         textRodada.setBackground(new java.awt.Color(255, 255, 255));
         labelPecasComidasOponentes.setText("Peças Comidas:");
@@ -514,12 +513,7 @@ public class TelaJogo extends javax.swing.JFrame {
         botaoDesconectar.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if (JOptionPane.showConfirmDialog(null, "Deseja mesmo Desconectar?", "Certeza?", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
-                    atorNet.desconectar();
-                    fechaJanela();
-                    MostraEntrada();
-
-                }
+                pedeConfirmacaoDesconectar();
             }
         });
     }
@@ -558,10 +552,37 @@ public class TelaJogo extends javax.swing.JFrame {
         nome = this.insereNome();
         boolean conectado = atorNet.conectar(nome, servidor);
 
-        if (conectado)
+        if (conectado){
             this.iniciaComponentesGraficos();
+            this.perguntaIniciar();
+        }
+
         else
             this.MostraEntrada();
+    }
+
+    private void perguntaIniciar() {
+        
+        Object[] opcoes = { "Iniciar", "Desconectar" };
+        int choice = JOptionPane.showOptionDialog(null, "Iniciar Partida?", "Escolha uma Opção", JOptionPane.YES_NO_OPTION,
+                JOptionPane.INFORMATION_MESSAGE, null, opcoes, opcoes[1]);
+        if (choice == 0) {
+            atorNet.solicitarInicio();
+        } else {
+            this.pedeConfirmacaoDesconectar();
+            }
+
+    }
+
+    private void pedeConfirmacaoDesconectar() {
+        Object[] opcoes = { "Sim", "Não" };
+        int choice = JOptionPane.showOptionDialog(null, "Deseja Desconectar?", "Deseja mesmo desconectar:", JOptionPane.YES_NO_OPTION,
+                JOptionPane.INFORMATION_MESSAGE, null, opcoes, opcoes[1]);
+        if (choice == 0) {
+            atorNet.desconectar();
+            fechaJanela();
+            MostraEntrada();
+        }
     }
 
     public void anunciarVencedor(boolean eu, boolean desistiu) {
@@ -646,4 +667,9 @@ public class TelaJogo extends javax.swing.JFrame {
 	public void setRodada(int rodada) {
 		textRodada.setText(""+rodada);
 	}
+
+    public void setNomeAdversario(String nome) {
+        nomeAdversario = nome;
+        
+    }
 }
