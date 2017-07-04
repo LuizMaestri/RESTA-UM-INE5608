@@ -3,19 +3,8 @@ package model;
 public class Estatisticas {
 
 	private Integer pecasComidas = 0;
-	private long tempocomeço ;
 
-	public Estatisticas(){
-		tempocomeço=System.currentTimeMillis();
-	}
 	
-	public String tempo(){
-        long tempoagora=System.currentTimeMillis();
-		String a= String.format("%.0f",(tempoagora-tempocomeço)/1000.0);
-		a+="seg.";
-		return a;
-	}
-
 	public Integer getPecasComidas() {
 		return pecasComidas;
 	}

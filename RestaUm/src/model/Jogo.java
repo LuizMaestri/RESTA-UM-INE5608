@@ -52,7 +52,8 @@ public class Jogo {
         case "PERDE":
             tela.anunciarVencedor(false, false);
         }
-        this.incrementaRodada();;
+        this.incrementaRodada();
+        tela.setRodada(rodada);
         System.out.println("Rodada = " + rodada);
         return comida;
     }
@@ -118,7 +119,8 @@ public class Jogo {
     }
 
     public void realizaBloqueio(int tab, int peca) {
-        this.incrementaRodada();;
+        this.incrementaRodada();
+        tela.setRodada(rodada);
         tabuleiros[tab].bloqueiaPeca(peca, rodada);
     }
 

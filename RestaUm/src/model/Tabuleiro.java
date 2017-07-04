@@ -76,7 +76,7 @@ public class Tabuleiro {
 	
 	public boolean eJogadaValida(int inicial, int destino){
 	    int comida = posicoes[inicial].valida(posicoes[destino]);
-	    return comida!= -1 && this.habloqueioImpedindo(inicial, destino, comida);
+	    return comida!= -1 && !this.habloqueioImpedindo(inicial, destino, comida);
 	}
 	
 	public boolean habloqueioImpedindo(int inicial, int destino, int comida){

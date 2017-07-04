@@ -19,7 +19,7 @@ public class TelaJogo extends javax.swing.JFrame {
     private JButton botaoDesconectar = new JButton();
     private javax.swing.JTextField textPecas;
     private javax.swing.JTextField textPecasOponente;
-    private javax.swing.JTextField textTempo;
+    private javax.swing.JTextField textRodada;
     private javax.swing.JLabel labelPecasComidasMinhas;
     private javax.swing.JLabel labelTempoJogo;
     private javax.swing.JLabel labelPecasComidasOponentes;
@@ -254,7 +254,7 @@ public class TelaJogo extends javax.swing.JFrame {
                         .addGroup(javax.swing.GroupLayout.Alignment.TRAILING,
                                 layout.createSequentialGroup().addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                         .addComponent(labelTempoJogo).addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(textTempo, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(textRodada, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
                                         .addGap(224, 224, 224)));
         layout.setVerticalGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(javax.swing.GroupLayout.Alignment.TRAILING,
@@ -347,7 +347,7 @@ public class TelaJogo extends javax.swing.JFrame {
                                                                         javax.swing.GroupLayout.PREFERRED_SIZE)
                                                                 .addComponent(pecas[32], javax.swing.GroupLayout.PREFERRED_SIZE, 25,
                                                                         javax.swing.GroupLayout.PREFERRED_SIZE))))
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED).addComponent(textTempo,
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED).addComponent(textRodada,
                                                 javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE,
                                                 javax.swing.GroupLayout.PREFERRED_SIZE))
                                         .addComponent(labelTempoJogo))
@@ -431,15 +431,15 @@ public class TelaJogo extends javax.swing.JFrame {
         labelPecasComidasMinhas = new javax.swing.JLabel();
         textPecas = new javax.swing.JTextField("0");
         labelTempoJogo = new javax.swing.JLabel();
-        textTempo = new javax.swing.JTextField("0:00");
+        textRodada = new javax.swing.JTextField("0");
         labelPecasComidasOponentes = new javax.swing.JLabel();
         textPecasOponente = new javax.swing.JTextField("0");
         labelPecasComidasMinhas.setText("Peças Comidas:");
         textPecas.setEditable(false);
         textPecas.setBackground(new java.awt.Color(255, 255, 255));
         labelTempoJogo.setText("Tempo De Jogo:");
-        textTempo.setEditable(false);
-        textTempo.setBackground(new java.awt.Color(255, 255, 255));
+        textRodada.setEditable(false);
+        textRodada.setBackground(new java.awt.Color(255, 255, 255));
         labelPecasComidasOponentes.setText("Peças Comidas:");
         textPecasOponente.setEditable(false);
         textPecasOponente.setBackground(new java.awt.Color(255, 255, 255));
@@ -486,8 +486,15 @@ public class TelaJogo extends javax.swing.JFrame {
                     if (atorNet.isMinhaVez()&&jogo.podeBloquear()) {
                             jogo.bloqueia(c);
                     } else
+                    if(!jogo.podeBloquear()){
+                    	avisaNaoPodeBloquear();
+                    }
+                    else{
                       avisaNaoESuaVez();
+                      }
                 }
+
+
             });
             
             if (i != 16) {
@@ -497,6 +504,10 @@ public class TelaJogo extends javax.swing.JFrame {
             }
         }
     }
+	private void avisaNaoPodeBloquear() {
+        JOptionPane.showMessageDialog(null, "Não pode bloquear!");
+		
+	}
 
     private void criaBotaoDesconectar() {
         botaoDesconectar.setText("Desconectar");
@@ -585,7 +596,6 @@ public class TelaJogo extends javax.swing.JFrame {
         pecas[destino].repaint();
         pecas[comida].repaint();
         textPecas.setText("" + jogo.getTabuleiro(0).getEstatisticas().getPecasComidas());
-        textTempo.setText("" + jogo.getTabuleiro(0).getEstatisticas().tempo());
     }
 
     public void pintarJogadaOponente(int origem, int destino, int comida) {
@@ -596,7 +606,6 @@ public class TelaJogo extends javax.swing.JFrame {
         pecasOponente[destino].repaint();
         pecasOponente[comida].repaint();
         textPecasOponente.setText("" + jogo.getTabuleiro(1).getEstatisticas().getPecasComidas());
-        textTempo.setText("" + jogo.getTabuleiro(1).getEstatisticas().tempo());
     }
 
     public String insereNome() {
@@ -633,4 +642,8 @@ public class TelaJogo extends javax.swing.JFrame {
         pecas[posBloqueada].setBackground(Color.yellow);
         
     }
+
+	public void setRodada(int rodada) {
+		textRodada.setText(""+rodada);
+	}
 }

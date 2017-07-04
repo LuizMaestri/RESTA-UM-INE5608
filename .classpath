@@ -23,6 +23,6 @@
 			<attribute name="maven.pomderived" value="true"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="/home/fabrizio-krukoski/APS/Projeto/RESTA-UM-INE5608/libs/ngnrtFramework.jar"/>
+	<classpathentry kind="lib" path="ngnrtFramework.jar"/>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>
