@@ -3,7 +3,7 @@ projeto implementado para a disciplina INE5608
 
 ## Especificação de requisitos
 **Projeto:** Resta Um
-####Especificação de Requisitos de Software:
+#### Especificação de Requisitos de Software:
   - Versão 2.0
   - 05/07/2015
 
@@ -15,23 +15,23 @@ projeto implementado para a disciplina INE5608
 | 1.3  |Luiz Ricardo F. M. |01/07/2015|Remoção do RF Manual e alteração NRF 03 |
 | 2.0  |Luiz Ricardo F. M. |05/07/2015|Revisão final de requisítos e protótipos|
 
-####Conteúdo:
+#### Conteúdo:
   1. Introdução
   2. Visão geral
   3. Requisitos de software
 
-####Introdução:
+#### Introdução:
 Este documento específica os requisitos de um jogo "Resta Um" adaptado para dois jogadores, na modalidade "em turnos", que será desenvolvido como um programa de computador.
 Referências: 
  [regras do jogo](http://pt.wikipedia.org/wiki/Resta_um)
 
-####Visão Geral:
+#### Visão Geral:
 **Arquitetura do programa:** programa orientado a objetos, cliente-servidor
-#####Premissas de desenvolvimento:
+##### Premissas de desenvolvimento:
   - O programa deve apresentar uma interface gráfica bidimensional
   - O programa deve ser implementado em Java, devendo executar em qualquer plataforma que disponha da máquina virtual Java
  
-####Requisitos de software:
+#### Requisitos de software:
  **Requisitos Funcionais:**
 
 |Cód.   |               Nome                |Descrição| 
